@@ -55,6 +55,7 @@ SPI Stack sets the service's environment from two places: the shared `osdu-confi
 | `KEYVAULT_URI` | Central Key Vault |
 | `APPINSIGHTS_KEY` | Telemetry |
 | `SERVER_PORT` | HTTP port (`8080`) |
+| `REDIS_HOSTNAME` | Redis host |
 
 **Specific to Storage**, from `services/storage.yaml`:
 
