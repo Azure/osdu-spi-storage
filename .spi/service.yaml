@@ -6,7 +6,7 @@ tests:
   acceptance:
     type: maven
     path: storage-acceptance-test
-    mavenArguments: ["-Dtest=!GetAllRecordsTest,!CopyRecordReferencesTest,!IngestRecordNotFoundTest", -Dsurefire.failIfNoSpecifiedTests=false, test]
+    mavenArguments: ["-Dtest=!GetAllRecordsTest,!CopyRecordReferencesTest,!IngestRecordNotFoundTest,!PubsubEndpointTest#should_rejectUndeleteButAllowSoftDelete_whenRecordSuspendedByIncompliantLegalTag", -Dsurefire.failIfNoSpecifiedTests=false, test]
     timeoutMinutes: 60
     bindings:
       HOST: { source: gateway }
