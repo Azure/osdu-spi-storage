@@ -2,4 +2,35 @@ schemaVersion: 3
 service:
   name: storage
   archetype: java-maven-azure
-tests: {}
+tests:
+  acceptance:
+    type: maven
+    path: storage-acceptance-test
+    mavenArguments: ["-Dtest=!GetAllRecordsTest,!CopyRecordReferencesTest,!IngestRecordNotFoundTest,!PubsubEndpointTest#should_rejectUndeleteButAllowSoftDelete_whenRecordSuspendedByIncompliantLegalTag", -Dsurefire.failIfNoSpecifiedTests=false, test]
+    timeoutMinutes: 60
+    bindings:
+      HOST: { source: gateway }
+      DATA_PARTITION_ID: { source: partition }
+      ENTITLEMENTS_DOMAIN: { source: domain }
+      PRIVILEGED_USER_TOKEN: { source: token }
+      ROOT_USER_TOKEN: { source: token }
+      NO_ACCESS_USER_TOKEN: { source: memberToken }
+      EXPOSE_FEATUREFLAG_ENABLED: { source: static, value: "true" }
+      COLLABORATION_ENABLED: { source: static, value: "false" }
+  integration:
+    type: maven
+    path: testing
+    mavenArguments: [-pl, storage-test-azure, -am, test]
+    timeoutMinutes: 60
+    bindings:
+      STORAGE_URL: { source: gateway, suffix: /api/storage/v2/ }
+      LEGAL_URL: { source: gateway, suffix: /api/legal/v1/ }
+      SEARCH_URL: { source: gateway, suffix: /api/search/v2/ }
+      INDEXER_URL: { source: gateway, suffix: /api/indexer/v2/ }
+      ENTITLEMENTS_URL: { source: gateway, suffix: /api/entitlements/v2/ }
+      TENANT_NAME: { source: partition }
+      DOMAIN: { source: domain }
+      DEPLOY_ENV: { source: static, value: empty }
+      EXPOSE_FEATUREFLAG_ENABLED: { source: static, value: "true" }
+      INTEGRATION_TESTER_ACCESS_TOKEN: { source: token }
+      NO_DATA_ACCESS_TESTER_ACCESS_TOKEN: { source: memberToken }
