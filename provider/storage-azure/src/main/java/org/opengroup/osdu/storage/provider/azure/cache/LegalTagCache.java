@@ -11,55 +11,47 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-
 package org.opengroup.osdu.storage.provider.azure.cache;
 
 import org.opengroup.osdu.core.common.cache.ICache;
-import org.opengroup.osdu.core.common.cache.MultiTenantCache;
-import org.opengroup.osdu.core.common.cache.VmCache;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
-import org.opengroup.osdu.core.common.provider.interfaces.ITenantFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
+// Backed by Redis so a tag removed on the pod that consumes the legal tag change event is removed for every replica.
 @Component("LegalTagCache")
 public class LegalTagCache implements ICache<String, String> {
 
-    @Autowired
-    private ITenantFactory tenantFactory;
+    private final ICache<String, String> store;
+    private final DpsHeaders dpsHeaders;
 
-    @Autowired
-    private DpsHeaders dpsHeaders;
-
-    private final MultiTenantCache<String> caches;
-
-    public LegalTagCache() {
-        this.caches = new MultiTenantCache<>(
-                new VmCache(60*60, 1000));
+    public LegalTagCache(@Qualifier("LegalTagStore") ICache<String, String> store, DpsHeaders dpsHeaders) {
+        this.store = store;
+        this.dpsHeaders = dpsHeaders;
     }
 
     @Override
     public void put(String key, String val) {
-        this.partitionCache().put(key, val);
+        this.store.put(this.partitionKey(key), val);
     }
 
     @Override
     public String get(String key) {
-        return this.partitionCache().get(key);
+        return this.store.get(this.partitionKey(key));
     }
 
     @Override
     public void delete(String key) {
-        this.partitionCache().delete(key);
+        this.store.delete(this.partitionKey(key));
     }
 
+    // The store is shared with other caches, so clearing it would drop their entries too.
     @Override
     public void clearAll() {
-        this.partitionCache().clearAll();
+        throw new UnsupportedOperationException("LegalTagCache does not support clearAll");
     }
 
-    private ICache<String, String> partitionCache() {
-        return this.caches.get(String.format("%s:legalTag", this.tenantFactory.getTenantInfo(dpsHeaders.getPartitionId())));
+    private String partitionKey(String key) {
+        return String.format("%s:legalTag:%s", this.dpsHeaders.getPartitionId(), key);
     }
 }
-
