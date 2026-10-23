@@ -16,11 +16,15 @@ package org.opengroup.osdu.storage.provider.azure.cache;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
+import io.lettuce.core.RedisConnectionException;
 import org.junit.jupiter.api.Test;
+import org.opengroup.osdu.core.common.cache.ICache;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
 
 class LegalTagCacheTest {
@@ -61,6 +65,28 @@ class LegalTagCacheTest {
         assertEquals(VALID, opendes.get(TAG));
         assertNull(other.get(TAG));
         assertEquals(VALID, sharedStore.get("opendes:legalTag:" + TAG));
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void storeFailure_readsAsMissAndSkipsWrite() {
+        ICache<String, String> failingStore = mock(ICache.class);
+        when(failingStore.get(anyString())).thenThrow(new RedisConnectionException("unreachable"));
+        doThrow(new RedisConnectionException("unreachable")).when(failingStore).put(anyString(), anyString());
+        LegalTagCache cache = new LegalTagCache(failingStore, headers);
+
+        assertNull(cache.get(TAG));
+        cache.put(TAG, VALID);
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void storeFailure_onDeleteIsRaisedSoTheMessageIsRetried() {
+        ICache<String, String> failingStore = mock(ICache.class);
+        doThrow(new RedisConnectionException("unreachable")).when(failingStore).delete(anyString());
+        LegalTagCache cache = new LegalTagCache(failingStore, headers);
+
+        assertThrows(RedisConnectionException.class, () -> cache.delete(TAG));
     }
 
     @Test
