@@ -29,9 +29,10 @@
 
   <properties>
     <!-- Azure Dependencies -->
-    <core-lib-azure.version>3.0.3</core-lib-azure.version>
-    <azure-storage-blob.version>12.29.0</azure-storage-blob.version>
-    <nimbus-jose-jwt.version>9.47</nimbus-jose-jwt.version>
+    <core-lib-azure.version>4.0.0</core-lib-azure.version>
+    <!-- Root pom pins these explicitly, which beats the core-lib-azure BOM; match the library here -->
+    <os-core-common.version>9.3.0</os-core-common.version>
+    <lettuce.version>7.9.0.RELEASE</lettuce.version>
     <!-- Plugin Versions -->
     <surefire-plugin.version>${maven-surefire-plugin.version}</surefire-plugin.version>
     <jacoco-plugin.version>0.8.14</jacoco-plugin.version>
@@ -47,13 +48,6 @@
 
   <dependencyManagement>
       <dependencies>
-      <dependency>
-        <groupId>io.netty</groupId>
-        <artifactId>netty-bom</artifactId>
-        <version>${netty.version}</version>
-        <type>pom</type>
-        <scope>import</scope>
-      </dependency>
 <!-- Core Azure Library -->
         <dependency>
           <groupId>org.opengroup.osdu</groupId>
@@ -62,16 +56,6 @@
           <type>pom</type>
           <scope>import</scope>
         </dependency>
-
-      <!-- Override parent POM's version where they have this in BOM to fix CVE-2023-52428 -->
-      <!-- This overrides version 7.9 from parent POM -->
-      <dependency>
-        <groupId>com.nimbusds</groupId>
-        <artifactId>nimbus-jose-jwt</artifactId>
-        <version>${nimbus-jose-jwt.version}</version>
-        <type>jar</type>
-        <scope>compile</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
@@ -148,6 +132,16 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+
+  <repositories>
+    <repository>
+      <id>spi-packages</id>
+      <url>https://osduspipackages.z1.web.core.windows.net/maven</url>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <build>
     <plugins>
