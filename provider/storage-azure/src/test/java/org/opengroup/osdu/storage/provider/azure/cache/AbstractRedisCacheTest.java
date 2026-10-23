@@ -88,6 +88,7 @@ public abstract class AbstractRedisCacheTest<T extends RedisAzureCache<?>> {
             hostname,
             DEFAULT_TTL,
             DEFAULT_TTL,
+            DEFAULT_TTL,
             DEFAULT_TTL);
     }
 }

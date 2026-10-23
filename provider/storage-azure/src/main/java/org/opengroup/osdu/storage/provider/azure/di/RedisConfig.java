@@ -32,6 +32,7 @@ public class RedisConfig {
     private final int schemaTtl;
     private final int groupTtl;
     private final int cursorTtl;
+    private final int legalTagTtl;
 
     public RedisConfig(
             @Value("${redis.database}") int database,
@@ -44,7 +45,8 @@ public class RedisConfig {
             @Value("${redis.hostname:#{null}}") String hostname,
             @Value("${redis.schema.ttl:3600}") int schemaTtl,
             @Value("${redis.group.ttl:30}") int groupTtl,
-            @Value("${redis.cursor.ttl:90}") int cursorTtl) {
+            @Value("${redis.cursor.ttl:90}") int cursorTtl,
+            @Value("${redis.legaltag.ttl:3600}") int legalTagTtl) {
         this.database = database;
         this.commandTimeout = commandTimeout;
         this.port = port;
@@ -56,6 +58,7 @@ public class RedisConfig {
         this.schemaTtl = schemaTtl;
         this.groupTtl = groupTtl;
         this.cursorTtl = cursorTtl;
+        this.legalTagTtl = legalTagTtl;
     }
 
     public RedisAzureConfiguration createSchemaConfiguration() { return createConfiguration(schemaTtl); }
@@ -63,6 +66,8 @@ public class RedisConfig {
     public RedisAzureConfiguration createGroupConfiguration() { return createConfiguration(groupTtl); }
 
     public RedisAzureConfiguration createCursorConfiguration() { return createConfiguration(cursorTtl); }
+
+    public RedisAzureConfiguration createLegalTagConfiguration() { return createConfiguration(legalTagTtl); }
 
     private RedisAzureConfiguration createConfiguration(int ttl) {
         return new RedisAzureConfiguration(

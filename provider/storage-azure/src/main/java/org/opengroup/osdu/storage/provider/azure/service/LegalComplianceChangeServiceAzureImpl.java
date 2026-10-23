@@ -15,7 +15,6 @@
 package org.opengroup.osdu.storage.provider.azure.service;
 
 import org.apache.http.HttpStatus;
-import org.opengroup.osdu.core.common.feature.IFeatureFlag;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.http.CollaborationContext;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
@@ -40,8 +39,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 
-import static org.opengroup.osdu.storage.util.RecordConstants.COLLABORATIONS_FEATURE_NAME;
-
 @Component
 public class LegalComplianceChangeServiceAzureImpl implements ILegalComplianceChangeService {
     private static final String LEGAL_STATUS_INVALID = "Invalid";
@@ -56,8 +53,6 @@ public class LegalComplianceChangeServiceAzureImpl implements ILegalComplianceCh
     private LegalTagCache legalTagCache;
     @Autowired
     private MessageBusImpl pubSubclient;
-    @Autowired
-    private IFeatureFlag collaborationFeatureFlag;
 
 
     @Override
@@ -102,10 +97,9 @@ public class LegalComplianceChangeServiceAzureImpl implements ILegalComplianceCh
                     for (RecordMetadata recordMetadata : recordsMetadata) {
                         recordIds.add(recordMetadata.getId());
                     }
-                    if (collaborationFeatureFlag.isFeatureEnabled(COLLABORATIONS_FEATURE_NAME)) {
+                    if (collaborationContext.isPresent()) {
                         this.pubSubclient.publishMessage(collaborationContext, headers, recordsChangedV2s);
-                    }
-                    if (!collaborationContext.isPresent()) {
+                    } else {
                         this.pubSubclient.publishMessage(headers, pubsubInfos);
                     }
                     logOnSucceedUpdateRecords(legalTags, complianceChangeInfo.getPubSubEvent(), recordIds);

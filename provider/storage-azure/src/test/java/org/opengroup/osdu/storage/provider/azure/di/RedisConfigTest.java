@@ -34,18 +34,22 @@ class RedisConfigTest {
             "hostname",
             101,
             202,
-            303);
+            303,
+            404);
 
         RedisAzureConfiguration schema = config.createSchemaConfiguration();
         RedisAzureConfiguration group = config.createGroupConfiguration();
         RedisAzureConfiguration cursor = config.createCursorConfiguration();
+        RedisAzureConfiguration legalTag = config.createLegalTagConfiguration();
 
         assertAll(
             () -> assertEquals(101, schema.getExpiration()),
             () -> assertEquals(202, group.getExpiration()),
             () -> assertEquals(303, cursor.getExpiration()),
+            () -> assertEquals(404, legalTag.getExpiration()),
             () -> assertEquals(7, schema.getConnectionTimeout()),
             () -> assertEquals(7, group.getConnectionTimeout()),
-            () -> assertEquals(7, cursor.getConnectionTimeout()));
+            () -> assertEquals(7, cursor.getConnectionTimeout()),
+            () -> assertEquals(7, legalTag.getConnectionTimeout()));
     }
 }
