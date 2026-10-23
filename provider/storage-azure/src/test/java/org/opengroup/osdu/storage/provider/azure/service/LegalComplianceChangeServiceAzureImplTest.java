@@ -21,7 +21,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.opengroup.osdu.core.common.feature.IFeatureFlag;
 import org.opengroup.osdu.core.common.model.entitlements.Acl;
 import org.opengroup.osdu.core.common.model.http.AppException;
 import org.opengroup.osdu.core.common.model.http.DpsHeaders;
@@ -58,8 +57,6 @@ class LegalComplianceChangeServiceAzureImplTest {
     private LegalTagCache legalTagCache;
     @Mock
     private MessageBusImpl pubSubclient;
-    @Mock
-    private IFeatureFlag collaborationFeatureFlag;
 
     @Test
     void updateComplianceOnRecords() throws ComplianceUpdateStoppedException {
