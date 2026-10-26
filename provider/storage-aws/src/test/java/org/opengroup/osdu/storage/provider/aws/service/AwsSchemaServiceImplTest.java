@@ -250,7 +250,7 @@ class AwsSchemaServiceImplTest {
     @Test
     void getAllKinds_NoSchemas_ThrowsAppException() {
         // Arrange - Return null response body
-        ResponseEntity<SchemaInfoResponse> responseEntity = new ResponseEntity<>(null, HttpStatus.OK);
+        ResponseEntity<SchemaInfoResponse> responseEntity = new ResponseEntity<>((SchemaInfoResponse) null, HttpStatus.OK);
         
         // Use doReturn().when() pattern with any() matchers
         doReturn(responseEntity).when(restTemplate).exchange(
