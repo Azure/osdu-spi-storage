@@ -14,28 +14,61 @@
 
 package org.opengroup.osdu.storage.config;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.opengroup.osdu.storage.request.ReplayRequest;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
+import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
+import org.springframework.web.filter.UrlHandlerFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-  @Autowired
-  private MappingJackson2HttpMessageConverter strictConverter;
+  /**
+   * Strict (fail on unknown properties) converter for ReplayRequest only. Deliberately not a bean:
+   * Spring Boot 4 skips its general Jackson 2 JSON converter when any MappingJackson2HttpMessageConverter
+   * bean exists, which would leave all other responses to Gson.
+   */
+  private final MappingJackson2HttpMessageConverter strictConverter = createStrictReplayRequestConverter();
 
-  @Override
-  public void configurePathMatch(PathMatchConfigurer configurer) {
-    configurer.setUseTrailingSlashMatch(true);
+  /**
+   * Spring Framework 7 removed trailing slash path matching; this filter keeps "/path/" and "/path"
+   * mapped to the same handler, ahead of security and request logging filters.
+   */
+  @Bean
+  public FilterRegistrationBean<UrlHandlerFilter> trailingSlashFilter() {
+    FilterRegistrationBean<UrlHandlerFilter> registration = new FilterRegistrationBean<>(
+        UrlHandlerFilter.trailingSlashHandler("/**").wrapRequest().build());
+    registration.setOrder(Ordered.HIGHEST_PRECEDENCE + 5);
+    return registration;
   }
 
   @Override
   public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
     converters.add(0, strictConverter);
+  }
+
+  static MappingJackson2HttpMessageConverter createStrictReplayRequestConverter() {
+    ObjectMapper objectMapper = new ObjectMapper();
+    objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
+    return new MappingJackson2HttpMessageConverter(objectMapper) {
+      @Override
+      public boolean canRead(Class<?> clazz, MediaType mediaType) {
+        return ReplayRequest.class.isAssignableFrom(clazz) && MediaType.APPLICATION_JSON.includes(mediaType);
+      }
+
+      @Override
+      public boolean canWrite(Class<?> clazz, MediaType mediaType) {
+        return ReplayRequest.class.isAssignableFrom(clazz) && MediaType.APPLICATION_JSON.includes(mediaType);
+      }
+    };
   }
 
 }
