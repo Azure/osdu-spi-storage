@@ -16,27 +16,19 @@ package org.opengroup.osdu.storage.config;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.List;
 import org.opengroup.osdu.storage.request.ReplayRequest;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
 import org.springframework.http.MediaType;
-import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.HttpMessageConverters;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.filter.UrlHandlerFilter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
-
-  /**
-   * Strict (fail on unknown properties) converter for ReplayRequest only. Deliberately not a bean:
-   * Spring Boot 4 skips its general Jackson 2 JSON converter when any MappingJackson2HttpMessageConverter
-   * bean exists, which would leave all other responses to Gson.
-   */
-  private final MappingJackson2HttpMessageConverter strictConverter = createStrictReplayRequestConverter();
 
   /**
    * Spring Framework 7 removed trailing slash path matching; this filter keeps "/path/" and "/path"
@@ -51,10 +43,17 @@ public class WebConfiguration implements WebMvcConfigurer {
   }
 
   @Override
-  public void extendMessageConverters(List<HttpMessageConverter<?>> converters) {
-    converters.add(0, strictConverter);
+  public void configureMessageConverters(HttpMessageConverters.ServerBuilder builder) {
+    builder.addCustomConverter(createStrictReplayRequestConverter());
   }
 
+  /**
+   * Strict (fail on unknown properties) converter for ReplayRequest only. Deliberately not a bean:
+   * Spring Boot 4 skips its general Jackson 2 JSON converter when any MappingJackson2HttpMessageConverter
+   * bean exists, which would leave all other responses to Gson. Jackson 2 is kept on purpose for this
+   * release line, hence the suppressed deprecation-for-removal warning.
+   */
+  @SuppressWarnings({"removal", "java:S5738"})
   static MappingJackson2HttpMessageConverter createStrictReplayRequestConverter() {
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
