@@ -32,7 +32,7 @@ public class GlobalOtherExceptionMapperTest {
         when(mapper.getErrorResponse(any(AppException.class))).thenReturn(new ResponseEntity<>(expectedBody, INTERNAL_SERVER_ERROR));
 
         ResponseEntity response = this.sut.handleGeneralException(exception);
-        assertEquals(500, response.getStatusCodeValue());
+        assertEquals(500, response.getStatusCode().value());
     }
 
 }
