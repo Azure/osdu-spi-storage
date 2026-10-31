@@ -29,7 +29,7 @@ top_level:
   storage-acceptance-test: keep
   storage-core: keep
   storage-core-plus: strip
-  schemathesis-tests: strip
+  schemathesis-tests: keep
   skaffold.yaml: strip
 
 testing:
