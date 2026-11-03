@@ -167,7 +167,7 @@
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>os-osm-core</artifactId>
-            <version>fix-postgres-storage-record-id-lookup-20261103.115808-3</version>
+            <version>0.28.1</version>
         </dependency>
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
