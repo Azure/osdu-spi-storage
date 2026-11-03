@@ -1,5 +1,68 @@
 # Changelog
 
+## [1.4.1](https://github.com/Azure/osdu-spi-storage/compare/v1.4.0...v1.4.1) (2026-11-03)
+
+
+### 🐛 Bug Fixes
+
+* [Venus] Remove IBM provider code and CI/CD from Storage ([#506](https://github.com/Azure/osdu-spi-storage/issues/506)) ([f7d3263](https://github.com/Azure/osdu-spi-storage/commit/f7d3263f0a166b1bfe67ceb809c1ee087dbb0e06))
+* **cache:** Back legal tag cache with Redis across replicas ([5e3b144](https://github.com/Azure/osdu-spi-storage/commit/5e3b1445a877e3647a0bf8172087b544e14e0c6f))
+* **cache:** Back legal tag cache with Redis across replicas ([a9def78](https://github.com/Azure/osdu-spi-storage/commit/a9def782b47d8b9ffa82a780f2a8a508963c2297))
+* **cache:** Treat legal tag cache store failures as misses ([6c67257](https://github.com/Azure/osdu-spi-storage/commit/6c672577d91700e26111b5a6ead2f0ca97d4696c))
+* Sync upstream changes from 26d37685 ([a8da234](https://github.com/Azure/osdu-spi-storage/commit/a8da2344022a978f319b983fa0a300880bea32ae))
+* Sync upstream changes from v0.0.1-piatliou ([a55d54a](https://github.com/Azure/osdu-spi-storage/commit/a55d54ab047778130bf4b51ba56beaf901950840))
+* Sync upstream changes from v0.0.1-piatliou ([15f1712](https://github.com/Azure/osdu-spi-storage/commit/15f1712b0977e0a6ae05e86f3fc9cd0e4c4537b2))
+* Sync upstream changes from v0.0.1-piatliou ([15c834a](https://github.com/Azure/osdu-spi-storage/commit/15c834a204a31f4bb26a3b417f29ca0afe1ed588))
+* Sync upstream changes from v0.0.1-piatliou ([e5b8fcc](https://github.com/Azure/osdu-spi-storage/commit/e5b8fccc2ced863c6689c89e2669d03a9e85a8ae))
+* **upstream:** Keep schemathesis-tests in upstream filter ([044127f](https://github.com/Azure/osdu-spi-storage/commit/044127f114617604981ecd80988e71e34e9ec61f))
+* **upstream:** Keep schemathesis-tests in upstream filter ([3b5c6a4](https://github.com/Azure/osdu-spi-storage/commit/3b5c6a449fe13de4bdd373fd30844cb47e356885))
+
+
+### 🔧 Miscellaneous
+
+* Generate filtered upstream tree ([9583a4b](https://github.com/Azure/osdu-spi-storage/commit/9583a4b712cfbdb014ca3304cb2a90c5875d3ea6))
+* Generate filtered upstream tree ([4b76c27](https://github.com/Azure/osdu-spi-storage/commit/4b76c274903ce03549e703ece942fd9c8161881b))
+* Generate filtered upstream tree ([dde7c89](https://github.com/Azure/osdu-spi-storage/commit/dde7c892f7353023578bd6d20306050636fc0675))
+* Generate filtered upstream tree ([a702d99](https://github.com/Azure/osdu-spi-storage/commit/a702d99913e85cedc42500bea1d5230c40c20492))
+* Generate filtered upstream tree ([7d4d5cd](https://github.com/Azure/osdu-spi-storage/commit/7d4d5cd11e13ce7e11e436305168d8043f63c6cb))
+* Sync template updates ([0d5ceac](https://github.com/Azure/osdu-spi-storage/commit/0d5ceac72ee651beca42d04e2ade439f736c53c9))
+* Sync template updates ([5eb1bdd](https://github.com/Azure/osdu-spi-storage/commit/5eb1bdde1ab9cd4d7219c4808992bc78aeb2c01d))
+* Sync template updates ([52df8a7](https://github.com/Azure/osdu-spi-storage/commit/52df8a784ef26214df788e51a7412a258f4c2eb8))
+* Sync template updates ([2ad1359](https://github.com/Azure/osdu-spi-storage/commit/2ad1359089de8734964656c2c2391b4b8b0fe54d))
+* Sync template updates ([87f15eb](https://github.com/Azure/osdu-spi-storage/commit/87f15ebf8a171a6e350db789375959ab12d7df72))
+* Sync template updates ([50f4e91](https://github.com/Azure/osdu-spi-storage/commit/50f4e917583e3b8b19e55238eec9dc5033e96095))
+* Sync template updates ([b66b753](https://github.com/Azure/osdu-spi-storage/commit/b66b75373ef4bd13beea3dbb3f29b8cb2d13181e))
+* **template-sync:** Sync template updates (updated 2026-10-27) ([2c026cd](https://github.com/Azure/osdu-spi-storage/commit/2c026cd960e3b36de0d3cfd1ba4cf7ace62b735b))
+* **template-sync:** Sync template updates (updated 2026-10-31) ([e38a0df](https://github.com/Azure/osdu-spi-storage/commit/e38a0df33c8358007145ace2a1a4653b4982503f))
+* **template-sync:** Sync template updates (updated 2026-11-02) ([013e58c](https://github.com/Azure/osdu-spi-storage/commit/013e58c7ba54343eb01e9fb6ddfde7e644025831))
+* **template-sync:** Sync template updates 2026-10-21 ([6f205a6](https://github.com/Azure/osdu-spi-storage/commit/6f205a614f11981112f30413fc0aaa70a8569576))
+* **template-sync:** Sync template updates 2026-10-27 ([3e9fcab](https://github.com/Azure/osdu-spi-storage/commit/3e9fcab39a393dbf6d7d6c648518d2fba92e5503))
+* **template-sync:** Sync template updates 2026-11-02 ([434e175](https://github.com/Azure/osdu-spi-storage/commit/434e175f576ffdf4001bbe76379786dc0302b195))
+* **template-sync:** Sync template updates 2026-11-03 ([ab9c06a](https://github.com/Azure/osdu-spi-storage/commit/ab9c06ab5fa56bff3cfc037d913955127adc61b9))
+* Update NOTICE from fossa-check-notice ([8a23ae2](https://github.com/Azure/osdu-spi-storage/commit/8a23ae24c029bd3a863cb8ab20492e4e80707dcb))
+
+
+### ♻️ Code Refactoring
+
+* **azure:** Drop collaboration feature flag from legal compliance ([8e56faa](https://github.com/Azure/osdu-spi-storage/commit/8e56faa18a3e8bcbb13b7215fd24c0c72536cc34))
+
+
+### 🔨 Build System
+
+* **deps:** Bump jackson.version from 2.21.7 to 2.21.8 in /testing/storage-test-azure ([2bbd7a8](https://github.com/Azure/osdu-spi-storage/commit/2bbd7a8fe086b37af5d3bd4fe52cb10b42301435))
+* **deps:** Bump jackson.version in /testing/storage-test-azure ([0d88882](https://github.com/Azure/osdu-spi-storage/commit/0d88882448c22a657b19db346f7f59175c0e477b))
+* **deps:** Upgrade core-lib-azure to 4.0.0 ([861a2e6](https://github.com/Azure/osdu-spi-storage/commit/861a2e6349a8ec04dab865517b0b0e896dc1ca57))
+* **deps:** Upgrade core-lib-azure to 4.0.0 ([881117f](https://github.com/Azure/osdu-spi-storage/commit/881117f04f731a3cd81d87db0df82dd3575379ba))
+* **storage-azure:** Remove spi-packages maven repository ([45af3b5](https://github.com/Azure/osdu-spi-storage/commit/45af3b593e0fc62e7ae04569786b6b056761c5b7))
+* **storage-azure:** Remove spi-packages maven repository ([09cdbf4](https://github.com/Azure/osdu-spi-storage/commit/09cdbf4a3ca3ec218f9fd9cefe80caa7c9f036f5))
+
+
+### ⚙️ Continuous Integration
+
+* **spi:** Configure acceptance and integration tests for storage ([64ff23a](https://github.com/Azure/osdu-spi-storage/commit/64ff23a321d41f33ad0e801c24cc7293aac21bba))
+* **spi:** Exclude pubsub undelete test from acceptance run ([ce1e3aa](https://github.com/Azure/osdu-spi-storage/commit/ce1e3aadd22e731cc68f29106c13bda789df1d35))
+* **spi:** Run storage acceptance and integration suites in the lane ([7ec4b7e](https://github.com/Azure/osdu-spi-storage/commit/7ec4b7e8ecdafc260ab574a5b7f6789ec630763c))
+
 ## [1.4.0](https://github.com/Azure/osdu-spi-storage/compare/v1.3.0...v1.4.0) (2026-10-14)
 
 
