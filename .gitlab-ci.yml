@@ -1,7 +1,4 @@
 variables:
-  AZURE_SERVICE: storage
-  AZURE_BUILD_SUBDIR: provider/storage-azure
-  AZURE_TEST_SUBDIR: testing/storage-test-azure
   # Full Docker Hub tag after "maven:" — flip to ...-temurin-25 for Java 25 compile/test.
   # Keep in sync with SERVICE_JAVA_VERSION (plugin-download jobs).
   MAVEN_IMAGE_TAG: "3.9.16-eclipse-temurin-25"
@@ -45,13 +42,7 @@ include:
   - project: "osdu/platform/ci-cd-pipelines"
     file: "scanners/sbom-maven.yml"
 
-  - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/azure.yml"
-
   - local: "devops/core-plus/pipeline/override-stages.yml"
-
-  - project: "osdu/platform/ci-cd-pipelines"
-    file: "cloud-providers/azure-one-pipeline.yml"
 
   - project: "osdu/platform/ci-cd-pipelines"
     file: "reporting/schemathesis.yml"
@@ -99,13 +90,6 @@ download_plugins:
   only:
     variables:
       - $PROTECTED == '1'
-
-azure_containerize:
-  variables:
-    AZURE_CONTAINERIZE_REPOSITORY: "https://gitlab-ci-token:${CI_JOB_TOKEN}@community.opengroup.org/osdu/platform/deployment-and-operations/base-containers-azure/service-base-image"
-
-azure_test:
-  image: community.opengroup.org:5555/osdu/platform/deployment-and-operations/base-containers-azure/azure-maven17:v0.0.1
 
 # Schemathesis jobs load schemathesis-tests/schemathesis.toml via
 # SCHEMATHESIS_CONFIG_FILE when present (see reporting/schemathesis.yml).
