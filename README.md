@@ -11,10 +11,6 @@ Community / core-plus modules compile and run on Java 25. For core-plus local se
 ## Running the Storage Service locally
 The Storage Service is a Maven multi-module project with each cloud implemention placed in its submodule.
 
-## Azure
-
-Instructions for running the Azure implementation locally can be found [here](./provider/storage-azure/README.md).
-
 ## Google Cloud Implementation
 
 The Google Cloud implementation has been moved to [gc-osdu-services](https://community.opengroup.org/osdu/platform/deployment-and-operations/base-containers-gcp/gc-osdu-services).
@@ -36,12 +32,12 @@ _Note: For Collaboration Filter exclusion, refer 'excluded paths' section in  [d
 #### Server Url(full path vs relative path) configuration
 - `api.server.fullUrl.enabled=true` It will generate full server url in the OpenAPI swagger
 - `api.server.fullUrl.enabled=false` It will generate only the contextPath only
-- default value is false (Currently only in Azure it is enabled)
+- default value is false
 [Reference]:(https://springdoc.org/faq.html#_how_is_server_url_generated) 
 
 ### Other platforms
 
-1. Navigate to the module of the cloud of interest, for example, ```storage-azure```. Configure ```application.properties``` and optionally ```logback-spring.xml```. Intead of changing these files in the source, you can also provide external files at run time. 
+1. Navigate to the module of the cloud of interest, for example, ```storage-core-plus```. Configure ```application.properties``` and optionally ```logback-spring.xml```. Intead of changing these files in the source, you can also provide external files at run time. 
 
 2. Navigate to the root of the storage project, build and run unit tests in command line:
     ```bash
@@ -71,9 +67,6 @@ The AWS provider has been removed from this repository.
     ```bash
     # Running BYOC (Bring Your Own Cloud): 
     java -jar storage-service-byoc\target\storage-byoc-0.0.1-SNAPSHOT-spring-boot.jar
-    
-    # Running Azure:
-    java -jar storage-service-azure\target\storage-azure-0.0.1-SNAPSHOT-spring-boot.jar
     ```
 
 6. Access the service:
@@ -83,8 +76,6 @@ The AWS provider has been removed from this repository.
     server.servlet.contextPath=/api/storage/v2/
     server.port=8080
     ```
-
-    > On Azure, when you access this service endpoint, you'll see a simple html page from which you can log in to Azure AD and get an Open ID Connect JWT token. You can then use this token to access the Storage Service API. The ```/whoami``` controller displays the logged in user info, and ```/swagger``` takes you to the swagger UI. 
 
 7. Build and test in IntelliJ:
     1. Import the maven project from the root of this project. 
@@ -99,11 +90,6 @@ The AWS provider has been removed from this repository.
 ## Cloud Deployment
 This section describes the deployment process for each cloud provider.
 
-### Azure
-
-Instructions for running the Azure implementation in the cloud can be found [here](https://dev.azure.com/slb-des-ext-collaboration/open-data-ecosystem/_git/infrastructure-templates?path=%2Fdocs%2Fosdu%2FSERVICE_DEPLOYMENTS.md&_a=preview).
-(This link may not be reachable for everyone, it points to Azure infrastructure templates and ensuing documentation. We are trying to find a home for that, so please stay tuned, or reach our to Dania.Kodeih@microsoft.com to get early access)
-
 ### AWS
 
 The AWS provider has been removed from this repository.
@@ -111,11 +97,6 @@ The AWS provider has been removed from this repository.
 
 ## Running integration tests
 Integration tests are located in a separate project for each cloud in the ```testing``` directory under the project root directory. 
-
-### Azure
-
-Instructions for running the Azure integration tests can be found [here](./provider/storage-azure/README.md).
-
 
 ### Google Cloud
 
