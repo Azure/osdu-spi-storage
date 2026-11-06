@@ -1,2 +1,0 @@
-org.springframework.boot.EnvironmentPostProcessor=\
-org.opengroup.osdu.storage.config.Jackson2HttpConvertersEnvironmentPostProcessor

@@ -4,18 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <artifactId>storage-core-plus</artifactId>
-    <version>0.31.0-SNAPSHOT</version>
     <description>Reference integration related implementation.</description>
     <packaging>jar</packaging>
 
     <parent>
         <groupId>org.opengroup.osdu</groupId>
         <artifactId>os-storage</artifactId>
-        <version>0.31.0-SNAPSHOT</version>
+        <version>${revision}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <properties>
+        <!-- Spring Boot 3.5.x still ships older Jackson; High CVEs need >= 2.21.4 -->
+        <jackson.version>2.21.6</jackson.version>
         <!-- google-cloud-datastore 2.17.5 pulls vulnerable transitive versions -->
         <protobuf.version>3.25.9</protobuf.version>
         <grpc.version>1.75.0</grpc.version>
@@ -25,7 +26,8 @@
         <dependencies>
             <!--
                 netty-bom must be imported BEFORE spring-boot-dependencies (Maven: first-declared
-                BOM wins). Required because lettuce-core 7.5.2 needs the patched Netty 4.2.x line. The parent storage/pom.xml also
+                BOM wins). Required because lettuce-core 7.5.2 needs Netty 4.2.x but Spring Boot
+                3.5.x BOM pins 4.1.x (CVE-2025-58057 et al). The parent storage/pom.xml also
                 declares this, but this module re-imports spring-boot-dependencies, so we must
                 re-import netty-bom here too to keep the override winning.
             -->
@@ -36,18 +38,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- Patched Jackson 2 / Jackson 3, re-imported before spring-boot-dependencies for the same reason -->
+            <!-- Jackson override: Spring Boot 3.5.x provides older Jackson; need >= 2.21.4 for High CVEs -->
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>${jackson2.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>tools.jackson</groupId>
-                <artifactId>jackson-bom</artifactId>
-                <version>${jackson3.version}</version>
+                <version>${jackson.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -93,21 +88,6 @@
             </dependency>
             <!-- Re-apply after spring-boot-dependencies (this module re-imports that BOM) -->
             <dependency>
-                <groupId>com.google.guava</groupId>
-                <artifactId>guava</artifactId>
-                <version>${guava.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-classic</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>ch.qos.logback</groupId>
-                <artifactId>logback-core</artifactId>
-                <version>${logback.version}</version>
-            </dependency>
-            <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
                 <version>${tomcat.version}</version>
@@ -133,7 +113,7 @@
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>storage-core</artifactId>
-            <version>0.31.0-SNAPSHOT</version>
+            <version>${revision}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.mockito</groupId>
@@ -148,7 +128,7 @@
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>core-plus-common-lib</artifactId>
-            <version>0.27.3</version>
+            <version>1.0.0</version>
         </dependency>
         <!--
             os-core-common declares lettuce-core as provided. core-plus is packaged
@@ -162,17 +142,17 @@
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>os-oqm-core</artifactId>
-            <version>0.29.0</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>os-osm-core</artifactId>
-            <version>0.28.0</version>
+            <version>1.1.0</version>
         </dependency>
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>os-obm-core</artifactId>
-            <version>0.30.7</version>
+            <version>1.0.0</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback.contrib</groupId>
@@ -208,14 +188,13 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
-            <version>5.10.1</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>5.7.0</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
         <!--TODO used only in TypeMapper.class, dependency should be removed later when clean dev env is created.-->
@@ -227,7 +206,7 @@
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>apd-core</artifactId>
-            <version>0.28.0</version>
+            <version>1.0.0</version>
         </dependency>
 
         <dependency>
@@ -241,7 +220,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.0.0</version>
+                <version>${spring-boot-maven-plugin.version}</version>
                 <configuration>
                     <profiles>
                         <profile>
@@ -268,8 +247,12 @@
                         </goals>
                         <configuration>
                             <classifier>spring-boot</classifier>
+                            <!-- ZIP layout: Main-Class is PropertiesLauncher (Boot 3.2+ package
+                                 org.springframework.boot.loader.launch). Required for
+                                 -Dloader.path=plugins/ in the CIMPL image. -->
+                            <layout>ZIP</layout>
                             <mainClass>
-                                org.springframework.boot.loader.PropertiesLauncher
+                                org.opengroup.osdu.storage.provider.gcp.StorageCorePlusApplication
                             </mainClass>
                         </configuration>
                     </execution>
@@ -287,19 +270,21 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <argLine>
                         @{argLine} --add-opens java.base/java.util=ALL-UNNAMED
                         --add-opens java.base/java.lang=ALL-UNNAMED
                     </argLine>
+                    <useFile>false</useFile>
+                    <trimStackTrace>false</trimStackTrace>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.10</version>
+                <version>${jacoco-maven-plugin.version}</version>
                 <executions>
                     <execution>
                         <goals>

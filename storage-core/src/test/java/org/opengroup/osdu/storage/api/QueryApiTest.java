@@ -91,7 +91,7 @@ public class QueryApiTest {
 
         MultiRecordInfo records = (MultiRecordInfo) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
         assertNull(records.getInvalidRecords());
         assertNull(records.getRetryRecords());
         assertEquals(2, records.getRecords().size());
@@ -117,7 +117,7 @@ public class QueryApiTest {
 
         MultiRecordInfo records = (MultiRecordInfo) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
         assertNull(records.getInvalidRecords());
         assertNull(records.getRetryRecords());
         assertEquals(2, records.getRecords().size());
@@ -160,7 +160,7 @@ public class QueryApiTest {
 
         DatastoreQueryResult allKindsResult = (DatastoreQueryResult) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
         assertEquals(3, allKindsResult.getResults().size());
         assertTrue(allKindsResult.getResults().contains("kind1"));
         assertTrue(allKindsResult.getResults().contains("kind2"));
@@ -178,7 +178,7 @@ public class QueryApiTest {
         allKinds.setResults(kinds);
         when(this.batchService.getAllKinds(CURSOR, LIMIT)).thenReturn(allKinds);
         ResponseEntity response = this.sut.getKinds(ENCODED_CURSOR, LIMIT);
-        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
     }
 
     @Test
@@ -202,7 +202,7 @@ public class QueryApiTest {
 
         DatastoreQueryResult allRecordIds = (DatastoreQueryResult) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
         assertEquals(3, allRecordIds.getResults().size());
         assertTrue(allRecordIds.getResults().contains("id1"));
         assertTrue(allRecordIds.getResults().contains("id2"));
@@ -230,7 +230,7 @@ public class QueryApiTest {
 
         DatastoreQueryResult allRecordIds = (DatastoreQueryResult) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
         assertEquals(3, allRecordIds.getResults().size());
         assertTrue(allRecordIds.getResults().contains("id1"));
         assertTrue(allRecordIds.getResults().contains("id2"));
@@ -257,6 +257,17 @@ public class QueryApiTest {
         assertFalse(annotation.value().contains(StorageRole.VIEWER));
         assertTrue(annotation.value().contains(StorageRole.CREATOR));
         assertTrue(annotation.value().contains(StorageRole.ADMIN));
+    }
+
+    @Test
+    public void should_notRequireContentType_when_gettingAllRecordsFromKind() throws Exception {
+        // GET /query/records must not declare a "consumes" media type, since GET requests have no body.
+        // A wrongly declared "consumes" causes Spring to reject requests without a Content-Type header
+        // with 415 Unsupported Media Type.
+        Method method = this.sut.getClass().getMethod("getAllRecords", String.class, String.class, Integer.class, String.class);
+        org.springframework.web.bind.annotation.GetMapping annotation = method.getAnnotation(org.springframework.web.bind.annotation.GetMapping.class);
+
+        assertEquals(0, annotation.consumes().length);
     }
 
     @Test

@@ -45,6 +45,7 @@ import org.opengroup.osdu.core.common.model.legal.LegalCompliance;
 import org.opengroup.osdu.core.common.model.legal.jobs.LegalTagConsistencyValidator;
 import org.opengroup.osdu.core.common.model.storage.PubSubInfo;
 import org.opengroup.osdu.core.common.model.storage.RecordMetadata;
+import org.opengroup.osdu.core.common.model.storage.RecordState;
 import org.opengroup.osdu.core.common.model.storage.Schema;
 import org.opengroup.osdu.core.common.model.tenant.TenantInfo;
 import org.opengroup.osdu.core.common.provider.interfaces.ITenantFactory;
@@ -64,7 +65,7 @@ import org.opengroup.osdu.storage.service.LegalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -83,40 +84,40 @@ class MultiThreadingLegalTagChangedProcessingTest {
     private static final int numberOfTenantRuns = numberOfAllRuns / 2;
     private final CountDownLatch latch = new CountDownLatch(numberOfAllRuns);
 
-    @MockitoBean
+    @MockBean
     private ICache<String, Groups> groupCache;
 
-    @MockitoBean(name = "LegalTagCache")
+    @MockBean(name = "LegalTagCache")
     private LegalTagMultiTenantCache legalTagMultiTenantCache;
 
-    @MockitoBean
+    @MockBean
     private ICache<String, Schema> schemaCache;
 
-    @MockitoBean
+    @MockBean
     private TokenProvider tokenProvider;
 
-    @MockitoBean
+    @MockBean
     private ITenantFactory tenantInfoFactory;
 
-    @MockitoBean
+    @MockBean
     private OqmAckReplier oqmAckReplier;
 
-    @MockitoBean
+    @MockBean
     private LegalServiceImpl legalService;
 
-    @MockitoBean
+    @MockBean
     private OsmRecordsMetadataRepository recordsMetadataRepository;
 
-    @MockitoBean
+    @MockBean
     private OqmDriver oqmDriver;
 
-    @MockitoBean
+    @MockBean
     private DefaultLogger iLogger;
 
-    @MockitoBean
+    @MockBean
     private JaxRsDpsLog jaxRsDpsLog;
 
-    @MockitoBean
+    @MockBean
     private StorageAuditLogger auditLogger;
 
     @Autowired
@@ -225,6 +226,7 @@ class MultiThreadingLegalTagChangedProcessingTest {
 
         RecordMetadata recordMetadata = new RecordMetadata();
         recordMetadata.setId("record-id" + legalTagName);
+        recordMetadata.setStatus(RecordState.active);
         recordMetadata.setLegal(legal);
 
         SimpleEntry<String, List<RecordMetadata>> mapWithValues = new SimpleEntry<>("empty", Collections.singletonList(recordMetadata));

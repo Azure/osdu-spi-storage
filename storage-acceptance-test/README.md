@@ -1,6 +1,6 @@
 ### Storage acceptance tests
 
-End-to-end tests for the OSDU Storage service. Tests use **[os-core-test](https://community.opengroup.org/osdu/platform/system/lib/core/os-core-test) `0.2.12`** for HTTP clients, authentication, and shared acceptance-test infrastructure.
+End-to-end tests for the OSDU Storage service. Tests use **[os-core-test](https://community.opengroup.org/osdu/platform/system/lib/core/os-core-test) `1.0.0`** for HTTP clients, authentication, and shared acceptance-test infrastructure.
 
 ### Prerequisites
 
@@ -17,7 +17,7 @@ Configuration is resolved in this order (first match wins):
 |-----------------------|-------------------------------|-----------------------------------------------------------------------------|----------|
 | `HOST`                | ex `https://osdu.example.com` | OSDU API host; `os-core-test` appends service paths (Storage, Legal, Entitlements, Search, Indexer) | yes |
 | `DATA_PARTITION_ID`   | ex `opendes`                  | Data partition for tests                                                    | yes      |
-| `ENTITLEMENTS_DOMAIN` | ex `contoso.com`              | Domain suffix used when building ACL group emails                           | yes      |
+| `ENTITLEMENTS_DOMAIN` | ex `contoso.com`              | Domain suffix used when building ACL group emails; derived from the test group email when unset | no |
 
 `BaseStorageAcceptanceTest` configures `STORAGE_V2`, `LEGAL_V1`, `ENTITLEMENTS_V2`, `SEARCH_V2`, and `INDEXER_V2` from `HOST` (paths `/api/storage/v2/`, `/api/legal/v1/`, `/api/entitlements/v2/`, `/api/search/v2/`, `/api/indexer/v2/`).
 
@@ -53,7 +53,6 @@ Each property can be overridden by an environment variable: dots (`.`) become un
 | Property (`test.properties`)          | Default | Environment override                        | Description |
 |---------------------------------------|---------|---------------------------------------------|-------------|
 | `schema.endpoints.enabled`            | `false` | `SCHEMA_ENDPOINTS_ENABLED`                  | Run schema API tests (`CreateSchemaIntegrationTest`, `StorageSchemaNegativeTest`, query-kinds tests that depend on schemas) |
-| `collaboration.enabled`               | `true`  | `COLLABORATION_ENABLED`                     | Run collaboration feature tests |
 | `test.replay.enabled`                 | `true`  | `TEST_REPLAY_ENABLED`                       | Run replay API tests |
 | `test.replayAll.enabled`              | `false` | `TEST_REPLAY_ALL_ENABLED`                   | Run long-running replay-all scenarios (not set in `test.properties`; code default) |
 | `test.replayAll.timeout`              | `60`    | `TEST_REPLAY_ALL_TIMEOUT`                   | Seconds to wait for replay-all indexing (not set in `test.properties`; code default) |
@@ -91,7 +90,7 @@ Integration accounts must have the roles listed in `src/test/resources/required-
 - **HTTP client:** `org.opengroup.osdu.core.test.client.StorageClient` — non-2xx responses throw `ClientException`.
 - **Cleanup:** `StorageClient` tracks records created on successful `putRecords` and deletes them in `teardown()` (via `TidyTestClient`). `LegalTagsClient` cleans up legal tags the same way. Per-class test groups are removed in `@AfterAll` via `entitlementsClient.teardown()`.
 - **Legal tags:** Created with full `LegalTag` payloads (including `dataType` `Public Domain Data`) through `createLegalTag()`.
-- **`/info`:** `GetQueryInfoIntegrationTest` extends `BaseGetInfoAcceptanceTests` and expects feature flags `collaborations-enabled` and `featureFlag.opa.enabled` when exposure is enabled.
+- **`/info`:** `GetQueryInfoIntegrationTest` extends `BaseGetInfoAcceptanceTests` and expects `featureFlag.opa.enabled` when feature flag exposure is enabled.
 
 ### Run tests
 
