@@ -2,6 +2,8 @@ schemaVersion: 3
 service:
   name: storage
   archetype: java-maven-azure
+componentGovernance:
+  upstream: https://community.opengroup.org/osdu/platform/system/storage
 tests:
   acceptance:
     type: maven
