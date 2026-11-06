@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.4.2](https://github.com/Azure/osdu-spi-storage/compare/v1.4.1...v1.4.2) (2026-11-06)
+
+
+### 🔧 Miscellaneous
+
+* Declare component governance inputs ([83e31d8](https://github.com/Azure/osdu-spi-storage/commit/83e31d82aa92dbd22ef9ffe17e5f284d4426d7e5))
+* Declare component governance inputs ([6b8e3f7](https://github.com/Azure/osdu-spi-storage/commit/6b8e3f7ab694b75f9eae142b3152b65467216d4c))
+* **notice:** Refresh NOTICE from Component Governance ([76108a9](https://github.com/Azure/osdu-spi-storage/commit/76108a9f2e06bb3637b6fa11efb09494cd66b509))
+* **notice:** Refresh NOTICE from Component Governance ([0403077](https://github.com/Azure/osdu-spi-storage/commit/0403077b39c7cda5eda7a1dd034deb7972ffaa9c))
+* Sync template updates ([23f7f5c](https://github.com/Azure/osdu-spi-storage/commit/23f7f5c4ae3b4e2113209fcb4c2d1ac2213d44a2))
+* Sync template updates ([52ced2d](https://github.com/Azure/osdu-spi-storage/commit/52ced2d81d269bef17c1a4354da1ce005ab483c5))
+* Sync template updates ([a34a808](https://github.com/Azure/osdu-spi-storage/commit/a34a808382fe09ca9363c5dcaba675030d12f681))
+* **template-sync:** Sync template updates (updated 2026-11-04) ([cf0cfed](https://github.com/Azure/osdu-spi-storage/commit/cf0cfed4ec2fcbdb478e11a3e56c29b7d9f5ca25))
+* **template-sync:** Sync template updates 2026-11-05 ([8bd5a1b](https://github.com/Azure/osdu-spi-storage/commit/8bd5a1bc77ac6974019b2387f90c6beab8426e0f))
+* **template-sync:** Sync template updates 2026-11-06 ([1157678](https://github.com/Azure/osdu-spi-storage/commit/115767877b9749c2ecc4adeb58e5abe35f1bc3a3))
+
 ## [1.4.1](https://github.com/Azure/osdu-spi-storage/compare/v1.4.0...v1.4.1) (2026-11-03)
 
 
