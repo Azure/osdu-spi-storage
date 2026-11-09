@@ -55,7 +55,7 @@
       <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
       <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
       <!-- lettuce-core 7.x requires Netty 4.2+; Spring Boot 3.5.14 provides 4.1.x -->
-      <netty.version>4.2.18.Final</netty.version>
+      <netty.version>4.2.20.Final</netty.version>
       <commons-codec.version>1.17.1</commons-codec.version>
       <!-- os-core-common 7.0.0 declares lettuce-core as provided; CVE-2025-58057 requires >= 7.5.2.RELEASE -->
       <lettuce.version>7.5.2.RELEASE</lettuce.version>
