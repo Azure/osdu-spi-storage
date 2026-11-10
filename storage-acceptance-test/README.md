@@ -17,7 +17,7 @@ Configuration is resolved in this order (first match wins):
 |-----------------------|-------------------------------|-----------------------------------------------------------------------------|----------|
 | `HOST`                | ex `https://osdu.example.com` | OSDU API host; `os-core-test` appends service paths (Storage, Legal, Entitlements, Search, Indexer) | yes |
 | `DATA_PARTITION_ID`   | ex `opendes`                  | Data partition for tests                                                    | yes      |
-| `ENTITLEMENTS_DOMAIN` | ex `contoso.com`              | Domain suffix used when building ACL group emails                           | yes      |
+| `ENTITLEMENTS_DOMAIN` | ex `contoso.com`              | Domain suffix used when building ACL group emails; derived from the test group email when unset | no |
 
 `BaseStorageAcceptanceTest` configures `STORAGE_V2`, `LEGAL_V1`, `ENTITLEMENTS_V2`, `SEARCH_V2`, and `INDEXER_V2` from `HOST` (paths `/api/storage/v2/`, `/api/legal/v1/`, `/api/entitlements/v2/`, `/api/search/v2/`, `/api/indexer/v2/`).
 
