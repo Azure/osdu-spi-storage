@@ -14,19 +14,17 @@
 
 package org.opengroup.osdu.storage.di;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import tools.jackson.databind.json.JsonMapper;
 
 public final class TestJsonMappers {
 
   private TestJsonMappers() {
   }
 
-  public static ObjectMapper objectMapper() {
-    BeanConfig beanConfig = new BeanConfig();
-    Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
-    beanConfig.recordNumbersCustomizer().customize(builder);
+  public static JsonMapper objectMapper() {
+    JsonMapper.Builder builder = JsonMapper.builder();
+    new BeanConfig().recordNumbersCustomizer().customize(builder);
     return builder.build();
   }
 

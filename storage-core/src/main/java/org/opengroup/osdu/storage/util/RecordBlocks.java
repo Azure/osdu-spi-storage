@@ -1,7 +1,7 @@
 package org.opengroup.osdu.storage.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.google.common.collect.MapDifference;
 import com.google.common.collect.Maps;
 import org.opengroup.osdu.core.common.model.http.CollaborationContext;
@@ -57,7 +57,7 @@ public class RecordBlocks {
                     RecordData recordData = null;
                     try {
                         recordData = objectMapper.readValue(cloudStorage.read(previousRecordMetadata, previousRecordMetadata.getLatestVersion(), false), RecordData.class);
-                    } catch (JsonProcessingException e) {
+                    } catch (JacksonException e) {
                         throw new RuntimeException(e);
                     }
                     Map<String, String> hash = hashForRecordData(recordData);

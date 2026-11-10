@@ -65,7 +65,7 @@ import org.opengroup.osdu.storage.service.LegalServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 @ExtendWith(SpringExtension.class)
@@ -84,40 +84,40 @@ class MultiThreadingLegalTagChangedProcessingTest {
     private static final int numberOfTenantRuns = numberOfAllRuns / 2;
     private final CountDownLatch latch = new CountDownLatch(numberOfAllRuns);
 
-    @MockBean
+    @MockitoBean
     private ICache<String, Groups> groupCache;
 
-    @MockBean(name = "LegalTagCache")
+    @MockitoBean(name = "LegalTagCache")
     private LegalTagMultiTenantCache legalTagMultiTenantCache;
 
-    @MockBean
+    @MockitoBean
     private ICache<String, Schema> schemaCache;
 
-    @MockBean
+    @MockitoBean
     private TokenProvider tokenProvider;
 
-    @MockBean
+    @MockitoBean
     private ITenantFactory tenantInfoFactory;
 
-    @MockBean
+    @MockitoBean
     private OqmAckReplier oqmAckReplier;
 
-    @MockBean
+    @MockitoBean
     private LegalServiceImpl legalService;
 
-    @MockBean
+    @MockitoBean
     private OsmRecordsMetadataRepository recordsMetadataRepository;
 
-    @MockBean
+    @MockitoBean
     private OqmDriver oqmDriver;
 
-    @MockBean
+    @MockitoBean
     private DefaultLogger iLogger;
 
-    @MockBean
+    @MockitoBean
     private JaxRsDpsLog jaxRsDpsLog;
 
-    @MockBean
+    @MockitoBean
     private StorageAuditLogger auditLogger;
 
     @Autowired

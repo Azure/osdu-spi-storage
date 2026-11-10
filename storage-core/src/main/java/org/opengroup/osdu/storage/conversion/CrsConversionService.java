@@ -14,8 +14,10 @@
 
 package org.opengroup.osdu.storage.conversion;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.SerializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -612,7 +614,8 @@ public class CrsConversionService {
     }
 
     private boolean appendObjectInRecord(JsonObject recordJsonObject, String attributeName, GeoJsonFeatureCollection wgs84Coordinates) {
-        ObjectMapper mapper = new ObjectMapper();
+        // Jackson 2 failed on empty beans by default; keep reporting such a converter response as an error
+        ObjectMapper mapper = JsonMapper.builder().enable(SerializationFeature.FAIL_ON_EMPTY_BEANS).build();
 
         try {
             String jsonString = mapper.writeValueAsString(wgs84Coordinates);
@@ -625,7 +628,7 @@ public class CrsConversionService {
             dataBlock.add(attributeName, conversionBlock);
             recordJsonObject.add(Constants.DATA, dataBlock);
             return true;
-        } catch (JsonProcessingException ex) {
+        } catch (JacksonException ex) {
             logger.error(String.format("There was an error converting the schema to a JSON string. %s", ex.getMessage()), ex);
             return false;
         }

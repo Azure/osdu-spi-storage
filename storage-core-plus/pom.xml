@@ -15,8 +15,6 @@
     </parent>
 
     <properties>
-        <!-- Spring Boot 3.5.x still ships older Jackson; High CVEs need >= 2.21.4 -->
-        <jackson.version>2.21.6</jackson.version>
         <!-- google-cloud-datastore 2.17.5 pulls vulnerable transitive versions -->
         <protobuf.version>3.25.9</protobuf.version>
         <grpc.version>1.75.0</grpc.version>
@@ -26,8 +24,7 @@
         <dependencies>
             <!--
                 netty-bom must be imported BEFORE spring-boot-dependencies (Maven: first-declared
-                BOM wins). Required because lettuce-core 7.5.2 needs Netty 4.2.x but Spring Boot
-                3.5.x BOM pins 4.1.x (CVE-2025-58057 et al). The parent storage/pom.xml also
+                BOM wins). Required because lettuce-core 7.5.2 needs the patched Netty 4.2.x line. The parent storage/pom.xml also
                 declares this, but this module re-imports spring-boot-dependencies, so we must
                 re-import netty-bom here too to keep the override winning.
             -->
@@ -38,11 +35,18 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!-- Jackson override: Spring Boot 3.5.x provides older Jackson; need >= 2.21.4 for High CVEs -->
+            <!-- Patched Jackson 2 / Jackson 3, re-imported before spring-boot-dependencies for the same reason -->
             <dependency>
                 <groupId>com.fasterxml.jackson</groupId>
                 <artifactId>jackson-bom</artifactId>
-                <version>${jackson.version}</version>
+                <version>${jackson2.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>tools.jackson</groupId>
+                <artifactId>jackson-bom</artifactId>
+                <version>${jackson3.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -85,8 +89,24 @@
                 <artifactId>spring-security-bom</artifactId>
                 <version>${spring-security.version}</version>
                 <type>pom</type>
+                <scope>import</scope>
             </dependency>
             <!-- Re-apply after spring-boot-dependencies (this module re-imports that BOM) -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-core</artifactId>
@@ -105,6 +125,11 @@
             <dependency>
                 <groupId>org.apache.tomcat.embed</groupId>
                 <artifactId>tomcat-embed-jasper</artifactId>
+                <version>${tomcat.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.tomcat</groupId>
+                <artifactId>tomcat-annotations-api</artifactId>
                 <version>${tomcat.version}</version>
             </dependency>
         </dependencies>
@@ -152,7 +177,7 @@
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>os-obm-core</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback.contrib</groupId>
@@ -206,7 +231,7 @@
         <dependency>
             <groupId>org.opengroup.osdu</groupId>
             <artifactId>apd-core</artifactId>
-            <version>1.0.0</version>
+            <version>1.0.1</version>
         </dependency>
 
         <dependency>
