@@ -14,12 +14,12 @@
 
 package org.opengroup.osdu.storage.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
+import tools.jackson.databind.exc.UnrecognizedPropertyException;
+import tools.jackson.databind.node.ArrayNode;
+import tools.jackson.databind.node.ObjectNode;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -114,8 +114,8 @@ public class GlobalExceptionMapper extends ResponseEntityExceptionHandler {
                 new AppException(HttpStatus.BAD_REQUEST.value(), "Unrecognized property.", e.getMessage(), e));
     }
 
-    @ExceptionHandler(JsonProcessingException.class)
-    protected ResponseEntity<Object> handleJsonProcessingException(JsonProcessingException e) {
+    @ExceptionHandler(JacksonException.class)
+    protected ResponseEntity<Object> handleJsonProcessingException(JacksonException e) {
         return this.getErrorResponse(
                 new AppException(HttpStatus.BAD_REQUEST.value(), "Failed to process JSON.", e.getMessage(), e));
     }
@@ -237,7 +237,7 @@ public class GlobalExceptionMapper extends ResponseEntityExceptionHandler {
             @NonNull HttpStatusCode status,
             @NonNull WebRequest request) {
         List<String> errors = new ArrayList<>();
-        e.getAllValidationResults().forEach(result ->
+        e.getParameterValidationResults().forEach(result ->
                 result.getResolvableErrors().forEach(error -> {
                     String message = error.getDefaultMessage();
                     if (StringUtils.isNotBlank(message)) {

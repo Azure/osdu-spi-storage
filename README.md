@@ -37,7 +37,7 @@ _Note: For Collaboration Filter exclusion, refer 'excluded paths' section in  [d
 
 ### Other platforms
 
-1. Navigate to the module of the cloud of interest, for example, ```storage-core-plus```. Configure ```application.properties``` and optionally ```logback-spring.xml```. Intead of changing these files in the source, you can also provide external files at run time. 
+1. Navigate to the module of the cloud of interest, for example, ```storage-core-plus```. Configure ```application.properties``` and optionally ```logback-spring.xml```. Intead of changing these files in the source, you can also provide external files at run time.
 
 2. Navigate to the root of the storage project, build and run unit tests in command line:
     ```bash

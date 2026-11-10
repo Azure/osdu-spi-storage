@@ -14,7 +14,7 @@
 
 package org.opengroup.osdu.storage.conversion;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import tools.jackson.core.JacksonException;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -805,7 +805,7 @@ public class CrsConversionServiceTest {
 
         ArgumentCaptor<Exception> cause = ArgumentCaptor.forClass(Exception.class);
         verify(this.logger).error(anyString(), cause.capture());
-        assertTrue(cause.getValue() instanceof JsonProcessingException, String.valueOf(cause.getValue()));
+        assertTrue(cause.getValue() instanceof JacksonException, String.valueOf(cause.getValue()));
         assertFalse(testRecord.getAsJsonObject("data").getAsJsonObject("SpatialLocation").has("Wgs84Coordinates"));
         assertEquals(1, statusBuilder.getErrors().size(), statusBuilder.getErrors().toString());
         assertTrue(statusBuilder.getErrors().get(0).contains("SpatialLocation"), statusBuilder.getErrors().get(0));
