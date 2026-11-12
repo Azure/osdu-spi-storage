@@ -774,6 +774,7 @@ Based on design decisions, when the Storage service caller is a federated user, 
 - Select the role ``Service Accounts`` > ``Service Account Token Creator``.
 
 ## Using skipdupes
+ACL, legal, tags, and ancestry are compared by value, so different metadata with matching Java hash codes is not treated as a duplicate.
 The skipdupes param is only related to update operations, which means you are calling the API with record IDs already present into the Data Ecosystem. If skipdupes==true, it means the service will not update the record if the payload is the same (duplicates). 
 If there is a difference in the payload, then a new version of the record will be created. On the other hand, skipdupes == false, in an update operation, the service will not check whether the payload is the same or not and will always create a new version, even if identical to a previous version. On the response side, skipedRecordIds are the record IDs which weren't updated (skipped) due skipdupes == true and same payload. 
 In PUT response, there will be no more replication in the record IDs, they will be in either recordIds or skippedRecordIds.
