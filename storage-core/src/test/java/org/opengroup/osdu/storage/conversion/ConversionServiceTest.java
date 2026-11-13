@@ -14,8 +14,8 @@
 
 package org.opengroup.osdu.storage.conversion;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -826,7 +826,7 @@ public class ConversionServiceTest {
     }
 
     @Test
-    public void should_returnRecordsAfterCrsConversion_whenProvidedRecordWithAsIngestedCoordinatesAndMetaFoRAttribute() throws JsonProcessingException {
+    public void should_returnRecordsAfterCrsConversion_whenProvidedRecordWithAsIngestedCoordinatesAndMetaFoRAttribute() throws JacksonException {
         this.originalRecords.add(this.jsonParser.parse(COMBINED_ANY_CRS_META_FOR_RECORD).getAsJsonObject());
 
         List<JsonObject> convertedRecords = new ArrayList<>();
