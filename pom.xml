@@ -274,7 +274,6 @@
                       <exclude>org.opengroup.osdu:os-storage</exclude>
                       <exclude>org.opengroup.osdu:storage-core</exclude>
                       <exclude>org.opengroup.osdu:storage-core-plus</exclude>
-                      <exclude>org.opengroup.osdu:storage-azure</exclude>
                     </excludes>
                   </requireReleaseDeps>
                 </rules>

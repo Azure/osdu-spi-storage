@@ -84,6 +84,12 @@ public class BaseStorageAcceptanceTest extends BaseAcceptanceTests {
         randomGroupName, "Test group for storage acceptance tests");
     assertEquals(HttpStatus.SC_CREATED, createGroupResponse.statusCode());
     testGroupEmail = createGroupResponse.body().email();
+
+    // Derive ENTITLEMENTS_DOMAIN from the group email when not set via env var.
+    // The email format is {name}@{dataPartitionId}.{domain}, so this eliminates the
+    // need for the ENTITLEMENTS_DOMAIN environment variable in CI (criterion 2).
+    TestUtils.initGroupIdFromEmail(testGroupEmail, getTenantId());
+
     // The storage service caches the requesting user's group list in Redis with a 30-second TTL.
     // If the cache was populated by a previous test class, the newly created group won't be in it.
     // Sleeping 31 seconds guarantees the cache has expired before the first putRecords call,

@@ -47,6 +47,7 @@ build/
 
 # GitHub Copilot
 .github/copilot-instructions.md
+.agents/workspace/
 
 # Schemathesis
 schemathesis-tests/output/

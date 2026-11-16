@@ -90,6 +90,30 @@ public final class RecordsApiAcceptanceTests extends BaseRecordsAcceptanceTest {
   }
 
   @Test
+  public void should_createNewRecords_whenTheyHaveSameFirst100Characters() {
+    long now = System.currentTimeMillis();
+    String sharedPrefix = getTenantId()
+        + ":marker:hij-osdu-dev-sis-internal-hq-techlog--A52C-4031-99D1---124CBB92-8C80-4668-BB48-1329C5FE241C--";
+    String firstId = sharedPrefix + "1." + now;
+    String secondId = sharedPrefix + "9." + now;
+    assertTrue(sharedPrefix.length() > 100);
+
+    StorageRecord[] records = withTestAcl(new StorageRecord[] {
+        singleEntityRecord(firstId, "TestCreation", kind, legalTag),
+        singleEntityRecord(secondId, "TestCreation", kind, legalTag)});
+
+    HttpResponse<CreateRecordsResponse> createResponse = storageClient.putRecords(records);
+    assertEquals(HttpStatus.SC_CREATED, createResponse.statusCode());
+    assertEquals(2, createResponse.body().recordCount());
+
+    for (String id : List.of(firstId, secondId)) {
+      HttpResponse<StorageRecord> response = storageClient.getRecord(id);
+      assertEquals(HttpStatus.SC_OK, response.statusCode());
+      assertEquals(id, response.body().id());
+    }
+  }
+
+  @Test
   public void should_updateRecordsWithSameData_when_skipDupesIsFalse() {
     HttpResponse<StorageRecord> response = storageClient.getRecord(recordId);
     assertEquals(HttpStatus.SC_OK, response.statusCode());

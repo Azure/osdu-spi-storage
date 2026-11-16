@@ -117,7 +117,7 @@ The header holds directives instructing the OSDU to handle in context of the pro
 instance and not in the context of the promoted or trusted data.
 
 ### Sample implementation to integrate with records changed messages
-Please refer to this MR for [implementation of Azure](https://community.opengroup.org/osdu/platform/system/storage/-/merge_requests/546).
+Please refer to this MR for [the original Azure implementation](https://community.opengroup.org/osdu/platform/system/storage/-/merge_requests/546).
 
 Consumers who want to integrate with record change messages that include changes made within a 
 collaboration context need to register the records to the new topic "recordstopic-v2". 
