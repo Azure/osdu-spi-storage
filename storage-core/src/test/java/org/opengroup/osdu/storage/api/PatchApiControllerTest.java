@@ -28,7 +28,7 @@ import org.opengroup.osdu.storage.model.PatchRecordsRequestModel;
 import org.opengroup.osdu.storage.model.RecordQueryPatch;
 import org.opengroup.osdu.storage.response.PatchRecordsResponse;
 import org.opengroup.osdu.storage.validation.ValidationDoc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.HttpMethod;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.web.servlet.ResultActions;

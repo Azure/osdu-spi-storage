@@ -14,7 +14,7 @@
 
 package org.opengroup.osdu.storage.api;
 
-import com.fasterxml.jackson.databind.JsonMappingException;
+import tools.jackson.databind.DatabindException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -121,8 +121,8 @@ public class ReplayApi {
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
     }
 
-    @ExceptionHandler(JsonMappingException.class)
-    public ResponseEntity<?> handleJsonMapping(JsonMappingException exception) {
+    @ExceptionHandler(DatabindException.class)
+    public ResponseEntity<?> handleJsonMapping(DatabindException exception) {
         return globalExceptionMapper.getErrorResponse(
             new AppException(
                 HttpStatus.BAD_REQUEST.value(),

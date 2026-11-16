@@ -14,7 +14,6 @@
 
 package org.opengroup.osdu.storage.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.fge.jsonpatch.JsonPatch;
 import com.google.common.base.Strings;
 
