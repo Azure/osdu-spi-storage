@@ -15,9 +15,9 @@
 
 package org.opengroup.osdu.storage.util;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-import com.fasterxml.jackson.databind.exc.ValueInstantiationException;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.exc.UnrecognizedPropertyException;
+import tools.jackson.databind.exc.ValueInstantiationException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.ValidationException;
@@ -122,7 +122,7 @@ public class GlobalExceptionMapperTest {
 
 	@Test
 	public void should_returnUnprocessableEntity_with_correct_reason_when_JsonProcessingException_Is_Captured() {
-		JsonProcessingException exception = Mockito.mock(JsonProcessingException.class);
+		JacksonException exception = Mockito.mock(JacksonException.class);
 		ResponseEntity response = this.sut.handleJsonProcessingException(exception);
 
 		assertEquals(HttpStatus.SC_BAD_REQUEST, response.getStatusCode().value());
@@ -328,7 +328,7 @@ public class GlobalExceptionMapperTest {
 		when(paramResult2.getResolvableErrors()).thenReturn(List.of(error2));
 
 		HandlerMethodValidationException exception = Mockito.mock(HandlerMethodValidationException.class);
-		Mockito.doReturn(List.of(paramResult1, paramResult2)).when(exception).getAllValidationResults();
+		Mockito.doReturn(List.of(paramResult1, paramResult2)).when(exception).getParameterValidationResults();
 
 		ResponseEntity<Object> response = this.sut.handleHandlerMethodValidationException(
 				exception, new HttpHeaders(), HttpStatusCode.valueOf(HttpStatus.SC_BAD_REQUEST), Mockito.mock(WebRequest.class));
@@ -352,7 +352,7 @@ public class GlobalExceptionMapperTest {
 		when(paramResult.getResolvableErrors()).thenReturn(List.of(blankError, realError));
 
 		HandlerMethodValidationException exception = Mockito.mock(HandlerMethodValidationException.class);
-		Mockito.doReturn(List.of(paramResult)).when(exception).getAllValidationResults();
+		Mockito.doReturn(List.of(paramResult)).when(exception).getParameterValidationResults();
 
 		ResponseEntity<Object> response = this.sut.handleHandlerMethodValidationException(
 				exception, new HttpHeaders(), HttpStatusCode.valueOf(HttpStatus.SC_BAD_REQUEST), Mockito.mock(WebRequest.class));
@@ -364,7 +364,7 @@ public class GlobalExceptionMapperTest {
 	@Test
 	public void should_returnFallbackMessage_when_HandlerMethodValidationExceptionHasNoErrors() {
 		HandlerMethodValidationException exception = Mockito.mock(HandlerMethodValidationException.class);
-		Mockito.doReturn(Collections.emptyList()).when(exception).getAllValidationResults();
+		Mockito.doReturn(Collections.emptyList()).when(exception).getParameterValidationResults();
 
 		ResponseEntity<Object> response = this.sut.handleHandlerMethodValidationException(
 				exception, new HttpHeaders(), HttpStatusCode.valueOf(HttpStatus.SC_BAD_REQUEST), Mockito.mock(WebRequest.class));

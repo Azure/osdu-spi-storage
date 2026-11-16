@@ -41,9 +41,9 @@ import org.opengroup.osdu.storage.service.QueryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 import jakarta.annotation.PostConstruct;
 import java.util.*;
@@ -301,7 +301,7 @@ public class DpsConversionService {
             }
             try {
                 recordObj = objectMapper.readValue(blob, Record.class);
-            } catch (JsonProcessingException e) {
+            } catch (JacksonException e) {
                 this.logger.error(String.format("Error occurred during parsing record for unitOfMeasureID: %s", unitOfMeasureID), e);
                 return "";
             }
@@ -322,7 +322,7 @@ public class DpsConversionService {
         // yields non-JSON (e.g. {abcd={a=0.0}}) which UnitConversionImpl rejects as INVALID_REFERENCE.
         try {
             return this.objectMapper.writeValueAsString(persistableReference);
-        } catch (JsonProcessingException e) {
+        } catch (JacksonException e) {
             this.logger.error(String.format(
                     "Error serializing PersistableReference for unitOfMeasureID: %s", unitOfMeasureID), e);
             return "";

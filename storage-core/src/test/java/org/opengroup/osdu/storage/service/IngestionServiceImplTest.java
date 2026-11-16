@@ -643,6 +643,44 @@ public class IngestionServiceImplTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
+    public void should_considerUpdateRecord_when_skipDupesAndAclHashCodeCollides() {
+        when(this.authService.isValidAcl(any(), any())).thenReturn(true);
+        this.records.remove(1);
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("country", "USA");
+        data.put("state", "TX");
+        this.record1.setData(data);
+
+        // "Aa" and "BB" have the same String.hashCode(), so both ACLs have the same Acl.hashCode()
+        Acl existingAcl = new Acl(new String[]{"data.Aa.viewers@tenant1.gmail.com"}, VALID_ACL);
+        Acl newAcl = new Acl(new String[]{"data.BB.viewers@tenant1.gmail.com"}, VALID_ACL);
+        this.record1.setAcl(newAcl);
+
+        RecordMetadata existingRecordMetadata = new RecordMetadata(record1);
+        existingRecordMetadata.setAcl(existingAcl);
+        Map<String, String> hashes = new HashMap<>();
+        hashes.put("data", crcHashGenerator.getHash(record1.getData()));
+        existingRecordMetadata.setHash(hashes);
+        existingRecordMetadata.resetGcsPath(Lists.newArrayList("kind/id/445"));
+        existingRecordMetadata.setStatus(RecordState.active);
+        Map<String, RecordMetadata> output = new HashMap<>();
+        output.put(RECORD_ID1, existingRecordMetadata);
+
+        when(this.recordRepository.get(any(List.class), eq(Optional.empty()))).thenReturn(output);
+        when(this.cloudStorage.hasAccess(existingRecordMetadata)).thenReturn(true);
+
+        TransferInfo transferInfo = this.sut.createUpdateRecords(true, this.records, USER, Optional.empty());
+
+        assertTrue(transferInfo.getSkippedRecords().isEmpty());
+        ArgumentCaptor<TransferBatch> transfer = ArgumentCaptor.forClass(TransferBatch.class);
+        verify(this.persistenceService, times(1)).persistRecordBatch(transfer.capture(), eq(Optional.empty()));
+        RecordMetadata persisted = transfer.getValue().getRecords().get(0).getRecordMetadata();
+        assertEquals(newAcl, persisted.getAcl());
+    }
+
+    @Test
     public void should_considerUpdateRecord_when_skipDupesAndDifferentRecordContentUsingDataHash() {
         when(this.authService.isValidAcl(any(), any())).thenReturn(true);
         this.records.remove(1);
