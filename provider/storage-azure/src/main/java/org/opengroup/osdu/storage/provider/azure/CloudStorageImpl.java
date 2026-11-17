@@ -52,8 +52,8 @@ import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.json.JsonMapper;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -93,7 +93,7 @@ public class CloudStorageImpl implements ICloudStorage {
     private String containerName;
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private JsonMapper objectMapper;
 
     @Override
     public void write(RecordProcessing... recordsProcessing) {
@@ -172,7 +172,7 @@ public class CloudStorageImpl implements ICloudStorage {
             String jsonData = this.read(rm, rm.getLatestVersion(), false);
             try {
                 data = objectMapper.readValue(jsonData, RecordData.class);
-            } catch (JsonProcessingException e){
+            } catch (JacksonException e){
                 logger.error(String.format("Error while converting metadata for record %s", rm.getId()), e);
                 continue;
             }

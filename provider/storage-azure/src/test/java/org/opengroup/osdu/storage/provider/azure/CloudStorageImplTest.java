@@ -36,7 +36,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.json.JsonMapper;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -47,7 +47,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.opengroup.osdu.storage.di.BeanConfig;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.opengroup.osdu.azure.blobstorage.BlobStore;
 import org.opengroup.osdu.core.common.logging.JaxRsDpsLog;
 import org.opengroup.osdu.core.common.model.entitlements.Acl;
@@ -97,7 +96,7 @@ class CloudStorageImplTest {
     @Mock
     private TransferInfo transfer;
     @Spy
-    private ObjectMapper objectMapper = recordObjectMapper();
+    private JsonMapper objectMapper = recordObjectMapper();
     @InjectMocks
     private CloudStorageImpl cloudStorage;
 
@@ -787,9 +786,9 @@ class CloudStorageImplTest {
         assertEquals("The user is not authorized to perform this action", exception.getError().getMessage());
     }
 
-    private static ObjectMapper recordObjectMapper() {
+    private static JsonMapper recordObjectMapper() {
         BeanConfig beanConfig = new BeanConfig();
-        Jackson2ObjectMapperBuilder builder = new Jackson2ObjectMapperBuilder();
+        JsonMapper.Builder builder = JsonMapper.builder();
         beanConfig.recordNumbersCustomizer().customize(builder);
         return builder.build();
     }
