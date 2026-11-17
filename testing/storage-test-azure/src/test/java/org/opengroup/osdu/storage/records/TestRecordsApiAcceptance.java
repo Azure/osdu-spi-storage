@@ -49,6 +49,25 @@ public class TestRecordsApiAcceptance extends RecordsApiAcceptanceTests {
         this.testUtils = null;
 	}
 
+    // Jackson 3 serializes properties alphabetically, so compare the 404 body by field rather than as a string.
+    @Test
+    @Override
+    public void should_deleteAllVersionsOfARecord_when_deletingARecordById() throws Exception {
+        String idToDelete = RECORD_ID + 1;
+
+        CloseableHttpResponse response = TestUtils.send("records", "PUT", HeaderUtils.getHeaders(TenantUtils.getTenantName(), testUtils.getToken()), createJsonBody(idToDelete, "tianNew2"), "");
+        TestUtils.getResult(response, 201, DummyRecordsHelper.CreateRecordResponse.class);
+
+        response = TestUtils.send("records/" + idToDelete, "DELETE", HeaderUtils.getHeaders(TenantUtils.getTenantName(), testUtils.getToken()), "", "");
+        assertEquals(204, response.getCode());
+
+        response = TestUtils.send("records/" + idToDelete, "GET", HeaderUtils.getHeaders(TenantUtils.getTenantName(), testUtils.getToken()), "", "");
+        JsonObject notFound = JsonParser.parseString(TestUtils.getResult(response, 404, String.class)).getAsJsonObject();
+        assertEquals(404, notFound.get("code").getAsInt());
+        assertEquals("Record not found", notFound.get("reason").getAsString());
+        assertEquals("The record '" + idToDelete + "' was not found", notFound.get("message").getAsString());
+    }
+
     @Test
     public void should_createNewRecords_whenTheyHaveSameFirst100Characters() throws Exception {
         final String RECORDID_1 = TenantUtils.getTenantName() + ":marker:hij-osdu-dev-sis-internal-hq-techlog--A52C-4031-99D1---124CBB92-8C80-4668-BB48-1329C5FE241C--1."
