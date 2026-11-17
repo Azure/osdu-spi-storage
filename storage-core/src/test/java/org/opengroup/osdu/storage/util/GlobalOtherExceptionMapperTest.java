@@ -38,7 +38,7 @@ public class GlobalOtherExceptionMapperTest {
         when(mapper.getErrorResponse(any(AppException.class))).thenReturn(new ResponseEntity<>(expectedBody, INTERNAL_SERVER_ERROR));
 
         ResponseEntity response = this.sut.handleGeneralException(exception);
-        assertEquals(500, response.getStatusCodeValue());
+        assertEquals(500, response.getStatusCode().value());
     }
 
     @Test
@@ -51,7 +51,7 @@ public class GlobalOtherExceptionMapperTest {
 
         ResponseEntity response = this.sut.handleGeneralException(exception);
 
-        assertEquals(400, response.getStatusCodeValue());
+        assertEquals(400, response.getStatusCode().value());
         ArgumentCaptor<AppException> captor = ArgumentCaptor.forClass(AppException.class);
         verify(mapper).getErrorResponse(captor.capture());
         assertEquals(BAD_REQUEST.value(), captor.getValue().getError().getCode());
@@ -68,7 +68,7 @@ public class GlobalOtherExceptionMapperTest {
 
         ResponseEntity response = this.sut.handleGeneralException(exception);
 
-        assertEquals(500, response.getStatusCodeValue());
+        assertEquals(500, response.getStatusCode().value());
     }
 
     @Test
@@ -80,7 +80,7 @@ public class GlobalOtherExceptionMapperTest {
 
         ResponseEntity response = this.sut.handleGeneralException(exception);
 
-        assertEquals(500, response.getStatusCodeValue());
+        assertEquals(500, response.getStatusCode().value());
     }
 
 }

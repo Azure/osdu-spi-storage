@@ -91,7 +91,7 @@ public class QueryApiTest {
 
         MultiRecordInfo records = (MultiRecordInfo) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
         assertNull(records.getInvalidRecords());
         assertNull(records.getRetryRecords());
         assertEquals(2, records.getRecords().size());
@@ -117,7 +117,7 @@ public class QueryApiTest {
 
         MultiRecordInfo records = (MultiRecordInfo) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
         assertNull(records.getInvalidRecords());
         assertNull(records.getRetryRecords());
         assertEquals(2, records.getRecords().size());
@@ -160,7 +160,7 @@ public class QueryApiTest {
 
         DatastoreQueryResult allKindsResult = (DatastoreQueryResult) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
         assertEquals(3, allKindsResult.getResults().size());
         assertTrue(allKindsResult.getResults().contains("kind1"));
         assertTrue(allKindsResult.getResults().contains("kind2"));
@@ -178,7 +178,7 @@ public class QueryApiTest {
         allKinds.setResults(kinds);
         when(this.batchService.getAllKinds(CURSOR, LIMIT)).thenReturn(allKinds);
         ResponseEntity response = this.sut.getKinds(ENCODED_CURSOR, LIMIT);
-        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
     }
 
     @Test
@@ -202,7 +202,7 @@ public class QueryApiTest {
 
         DatastoreQueryResult allRecordIds = (DatastoreQueryResult) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
         assertEquals(3, allRecordIds.getResults().size());
         assertTrue(allRecordIds.getResults().contains("id1"));
         assertTrue(allRecordIds.getResults().contains("id2"));
@@ -230,7 +230,7 @@ public class QueryApiTest {
 
         DatastoreQueryResult allRecordIds = (DatastoreQueryResult) response.getBody();
 
-        assertEquals(HttpStatus.SC_OK, response.getStatusCodeValue());
+        assertEquals(HttpStatus.SC_OK, response.getStatusCode().value());
         assertEquals(3, allRecordIds.getResults().size());
         assertTrue(allRecordIds.getResults().contains("id1"));
         assertTrue(allRecordIds.getResults().contains("id2"));
