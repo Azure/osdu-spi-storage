@@ -161,6 +161,14 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     @Override
     public Map<String, String> patchRecordsMetadata(Map<RecordMetadata, JsonPatch> jsonPatchPerRecord, Optional<CollaborationContext> collaborationContext) {
+        if (jsonPatchPerRecord == null) {
+            throw new IllegalArgumentException("Record metadata patches are required.");
+        }
+        if (jsonPatchPerRecord.entrySet().stream()
+                .anyMatch(entry -> entry.getKey() == null || entry.getValue() == null)) {
+            throw new IllegalArgumentException("Each record metadata patch must include a record and patch.");
+        }
+
         Map<String, String> recordError;
         try {
             recordError = this.commitPatchDatastoreTransaction(jsonPatchPerRecord, collaborationContext);
@@ -177,6 +185,9 @@ public class PersistenceServiceImpl implements PersistenceService {
                 e.addSuppressed(innerEx);
             }
             throw e;
+        }
+        if (recordError == null) {
+            throw new IllegalStateException("Record metadata patch returned no result.");
         }
         if (!recordError.isEmpty()) {
             this.logger.warning("Reverting meta data changes");
@@ -216,6 +227,10 @@ public class PersistenceServiceImpl implements PersistenceService {
 
     @Override
     public void updateMetadataAndPublishRecordChangeEvent(RecordMetadata recordMetadata, Optional<CollaborationContext> collaborationContext) {
+        if (recordMetadata == null) {
+            throw new IllegalArgumentException("Record metadata is required.");
+        }
+
         List<RecordMetadata> recordMetadataList = Collections.singletonList(recordMetadata);
         commitDatastoreTransaction(recordMetadataList, collaborationContext);
 

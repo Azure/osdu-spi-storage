@@ -418,7 +418,41 @@ public class PersistenceServiceImplTest {
         assertTrue(patchErrors.isEmpty());
     }
 
-        @Test
+    @Test
+    public void should_rejectMissingMetadata_when_publishingRecordChangeEvent() {
+        assertThrows(IllegalArgumentException.class,
+                () -> this.sut.updateMetadataAndPublishRecordChangeEvent(null, Optional.empty()));
+        verifyNoInteractions(this.recordRepository, this.pubSubClient);
+    }
+
+    @Test
+    public void should_rejectMissingPatchMap() {
+        assertThrows(IllegalArgumentException.class,
+                () -> this.sut.patchRecordsMetadata(null, Optional.empty()));
+        verifyNoInteractions(this.recordRepository, this.pubSubClient);
+    }
+
+    @Test
+    public void should_rejectPatchEntriesWithoutRecordOrPatch() {
+        Map<RecordMetadata, JsonPatch> patches = new HashMap<>();
+        patches.put(null, mock(JsonPatch.class));
+
+        assertThrows(IllegalArgumentException.class,
+                () -> this.sut.patchRecordsMetadata(patches, Optional.empty()));
+        verifyNoInteractions(this.recordRepository, this.pubSubClient);
+    }
+
+    @Test
+    public void should_rejectNullPatchRepositoryResult() {
+        Map<RecordMetadata, JsonPatch> patches = new HashMap<>();
+        patches.put(new RecordMetadata(), mock(JsonPatch.class));
+        when(this.recordRepository.patch(anyMap(), any())).thenReturn(null);
+
+        assertThrows(IllegalStateException.class,
+                () -> this.sut.patchRecordsMetadata(patches, Optional.empty()));
+    }
+
+    @Test
     public void should_deleteOrphanedMetadata_when_cleanupDatastoreWithNoRemainingVersions() {
         List<RecordMetadata> recordsMetadata = new ArrayList<>();
 
