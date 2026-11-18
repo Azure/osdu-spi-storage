@@ -163,6 +163,9 @@ public class ReplayService implements IReplayService {
     }
 
     private ReplayResponse startReplay(List<ReplayMessage> replayMessages, ReplayMetaDataDTO replayMetaData) {
+        if (replayMetaData == null) {
+            throw new IllegalArgumentException("Replay metadata is required.");
+        }
 
         try {
             replayRepository.save(replayMetaData);
@@ -254,6 +257,11 @@ public class ReplayService implements IReplayService {
                 replayMessage.getBody().getKind(),
                 replayMessage.getBody().getReplayId()
                                                                                             );
+        if (replayMetadata == null) {
+            logger.warn("Replay metadata not found; skipping failure update.");
+            return;
+        }
+
         replayMetadata.setState(ReplayState.FAILED.name());
         replayRepository.save(replayMetadata);
         try {

@@ -14,6 +14,14 @@ variables:
   ACCEPTANCE_TEST_DIR: "storage-acceptance-test"
   CORE_COVERAGE_THRESHOLD: "80"
 
+# The shared coverage job builds storage-core and storage-core-plus in separate Maven
+# invocations. Install the reactor first so core-plus resolves the in-repo core
+# snapshot and its compiled classes are available to SonarCloud.
+core_code_coverage:
+  before_script:
+    - !reference [.maven, before_script]
+    - $MAVEN -pl storage-core,storage-core-plus -am install -DskipTests=true
+
 include:
   - project: "osdu/platform/ci-cd-pipelines"
     file: "standard-setup.yml"
