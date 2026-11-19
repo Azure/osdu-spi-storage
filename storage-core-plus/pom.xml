@@ -277,7 +277,7 @@
                                  -Dloader.path=plugins/ in the CIMPL image. -->
                             <layout>ZIP</layout>
                             <mainClass>
-                                org.opengroup.osdu.storage.provider.gcp.StorageCorePlusApplication
+                                org.opengroup.osdu.storage.coreplus.StorageCorePlusApplication
                             </mainClass>
                         </configuration>
                     </execution>

@@ -123,7 +123,7 @@ java $JAVA_TOOL_OPTIONS \
          -Dlog4j.formatMsgNoLookups=true \
          -Dloader.path=plugins/ \
          -Dloader.debug=true \
-         -Dloader.main=org.opengroup.osdu.storage.provider.gcp.StorageCorePlusApplication \
+         -Dloader.main=org.opengroup.osdu.storage.coreplus.StorageCorePlusApplication \
          -jar /app/storage-${PROVIDER_NAME}.jar
 ```
 
