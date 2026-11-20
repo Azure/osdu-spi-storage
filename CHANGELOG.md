@@ -1,5 +1,63 @@
 # Changelog
 
+## [1.4.2](https://github.com/Azure/osdu-spi-storage/compare/v1.4.1...v1.4.2) (2026-11-20)
+
+
+### 🐛 Bug Fixes
+
+* Sync upstream changes from 286e29c5 ([7fd21af](https://github.com/Azure/osdu-spi-storage/commit/7fd21af24f800ff0e607cdb22fcc8a10499b4e4d))
+* Sync upstream changes from 58dbfdec ([2e25ab4](https://github.com/Azure/osdu-spi-storage/commit/2e25ab4f545a257ca818b7a5e808ac6f489d1ac0))
+* Sync upstream changes from c8d3796d ([ebf96f8](https://github.com/Azure/osdu-spi-storage/commit/ebf96f8e25402da7cfda61acca06a74821f8e7d2))
+* Update CODEOWNERS team to @Azure/osdu-spi ([99a8c1a](https://github.com/Azure/osdu-spi-storage/commit/99a8c1a2365aac3df495a1c99ce109bbdbfec273))
+* Update CODEOWNERS team to @Azure/osdu-spi ([9d839a0](https://github.com/Azure/osdu-spi-storage/commit/9d839a07a353e94cc07bd9a58e610c8e57617d5e))
+
+
+### ⚡ Performance Improvements
+
+* Read record metadata by ID through OSM getByIds ([58dbfde](https://github.com/Azure/osdu-spi-storage/commit/58dbfdec6a6b13e9facd822a48062130139b85b3))
+* Read record metadata by ID through OSM getByIds ([3f6bf73](https://github.com/Azure/osdu-spi-storage/commit/3f6bf733418cbef96bf683291156d826d4523dff))
+
+
+### 🔧 Miscellaneous
+
+* Declare component governance inputs ([83e31d8](https://github.com/Azure/osdu-spi-storage/commit/83e31d82aa92dbd22ef9ffe17e5f284d4426d7e5))
+* Declare component governance inputs ([6b8e3f7](https://github.com/Azure/osdu-spi-storage/commit/6b8e3f7ab694b75f9eae142b3152b65467216d4c))
+* Generate filtered upstream tree ([2c7c6b3](https://github.com/Azure/osdu-spi-storage/commit/2c7c6b33526ecdaa4ad949f706f7ae244ac16968))
+* Generate filtered upstream tree ([688dd01](https://github.com/Azure/osdu-spi-storage/commit/688dd0107725a920b6a7180a8f5f24b44a35fe51))
+* Generate filtered upstream tree ([49c3e84](https://github.com/Azure/osdu-spi-storage/commit/49c3e84f776d7b535a624b91650cc64682e144e0))
+* **notice:** Refresh NOTICE from Component Governance ([100427a](https://github.com/Azure/osdu-spi-storage/commit/100427af387a46de4f71b1f0215854b8b1fd5924))
+* **notice:** Refresh NOTICE from Component Governance ([99bd8a3](https://github.com/Azure/osdu-spi-storage/commit/99bd8a3a332843c5def7b525df499df637e6ed04))
+* **notice:** Refresh NOTICE from Component Governance ([76108a9](https://github.com/Azure/osdu-spi-storage/commit/76108a9f2e06bb3637b6fa11efb09494cd66b509))
+* **notice:** Refresh NOTICE from Component Governance ([0403077](https://github.com/Azure/osdu-spi-storage/commit/0403077b39c7cda5eda7a1dd034deb7972ffaa9c))
+* Remove Azure provider and Azure CI/CD ([1023c15](https://github.com/Azure/osdu-spi-storage/commit/1023c15ca737cb98260d870233c3be2c3c7ac1b8))
+* Remove Azure provider and Azure CI/CD ([9866040](https://github.com/Azure/osdu-spi-storage/commit/98660406140fdcf663de0ccc3a6dc07186f93192))
+* Sync template updates ([9d9e860](https://github.com/Azure/osdu-spi-storage/commit/9d9e8608657c0650d72b29b63dd24c9834fdf7c3))
+* Sync template updates ([d154af3](https://github.com/Azure/osdu-spi-storage/commit/d154af30562bb1c08671c1aa53b5caf2dd8cb027))
+* Sync template updates ([23f7f5c](https://github.com/Azure/osdu-spi-storage/commit/23f7f5c4ae3b4e2113209fcb4c2d1ac2213d44a2))
+* Sync template updates ([52ced2d](https://github.com/Azure/osdu-spi-storage/commit/52ced2d81d269bef17c1a4354da1ce005ab483c5))
+* Sync template updates ([a34a808](https://github.com/Azure/osdu-spi-storage/commit/a34a808382fe09ca9363c5dcaba675030d12f681))
+* **template-sync:** Sync template updates (updated 2026-11-04) ([cf0cfed](https://github.com/Azure/osdu-spi-storage/commit/cf0cfed4ec2fcbdb478e11a3e56c29b7d9f5ca25))
+* **template-sync:** Sync template updates 2026-11-05 ([8bd5a1b](https://github.com/Azure/osdu-spi-storage/commit/8bd5a1bc77ac6974019b2387f90c6beab8426e0f))
+* **template-sync:** Sync template updates 2026-11-06 ([1157678](https://github.com/Azure/osdu-spi-storage/commit/115767877b9749c2ecc4adeb58e5abe35f1bc3a3))
+* **template-sync:** Sync template updates 2026-11-10 ([6cb24c7](https://github.com/Azure/osdu-spi-storage/commit/6cb24c731b6c20cc033499535dd90f2e91b8fcee))
+* **template-sync:** Sync template updates 2026-11-16 ([8d00282](https://github.com/Azure/osdu-spi-storage/commit/8d00282756cacf18653cde1fbd1ae5effdfd5056))
+
+
+### 🧪 Tests
+
+* **acceptance:** Derive ENTITLEMENTS_DOMAIN and add 100-char ID prefix test ([21ac469](https://github.com/Azure/osdu-spi-storage/commit/21ac469f21cf2a1f4df17f886a3244a55f047595))
+* **acceptance:** Derive ENTITLEMENTS_DOMAIN and add 100-char ID prefix test ([9140d38](https://github.com/Azure/osdu-spi-storage/commit/9140d382f39b53d2d92cb2beba087e4d702ce9a0))
+* **azure:** Override record delete test to compare 404 by field ([621e1c5](https://github.com/Azure/osdu-spi-storage/commit/621e1c52cc0c01434691540925fbd6c8d4bb5572))
+
+
+### 🔨 Build System
+
+* **azure:** Upgrade core-lib-azure to 5.0.0 for Spring Boot 4 ([fd242b9](https://github.com/Azure/osdu-spi-storage/commit/fd242b9a738990404434582161c3838f09a7d178))
+* **azure:** Upgrade core-lib-azure to 5.0.0 for Spring Boot 4 ([48750de](https://github.com/Azure/osdu-spi-storage/commit/48750de81b799ee1bbba5f57c8152521b1ee3175))
+* **deps-dev:** Bump com.azure:azure-storage-blob ([8563f36](https://github.com/Azure/osdu-spi-storage/commit/8563f36f35fb4afeba702c2db73bb775f5e5649d))
+* **deps-dev:** Bump com.azure:azure-storage-blob from 12.36.0 to 12.36.1 in /testing/storage-test-azure ([4343d18](https://github.com/Azure/osdu-spi-storage/commit/4343d189fd5f4b2d7711717020a1a121721a3667))
+* Test with OSM build from os-osm!25 ([f1c6abd](https://github.com/Azure/osdu-spi-storage/commit/f1c6abd149b157c805695796960da48bd47ea370))
+
 ## [1.4.1](https://github.com/Azure/osdu-spi-storage/compare/v1.4.0...v1.4.1) (2026-11-03)
 
 
