@@ -69,6 +69,7 @@ import java.util.stream.Stream;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -949,8 +950,7 @@ public class RecordServiceImplTest {
 
         assertEquals(RecordState.deleted, record.getStatus());
         assertEquals(USER_NAME, record.getModifyUser());
-        assertNotNull(record.getModifyTime());
-        assertTrue(record.getModifyTime() != 0);
+        assertNotEquals(0L, record.getModifyTime());
     }
 
     @Test
