@@ -127,10 +127,10 @@ public class RecordApi {
 	@ResponseStatus(HttpStatus.CREATED)
 	public CreateUpdateRecordsResponse createOrUpdateRecords(@Parameter(description = "x-collaboration", schema = @Schema(minLength = 1, pattern = X_COLLABORATION_DIRECTIVES_PATTERN)) @RequestHeader(name = "x-collaboration", required = false)
 															 @Valid @ValidateCollaborationContext String collaborationDirectives,
-															 @Parameter(description = "Skip duplicates when updating records with the same value.") @RequestParam(required = false) boolean skipdupes,
+															 @Parameter(description = "Skip duplicates when updating records with the same value.") @RequestParam(required = false) Boolean skipdupes,
 															 @Parameter(description = "Records to be created/updated") @RequestBody @Valid @NotEmpty @Size(max = 500, message = ValidationDoc.RECORDS_MAX) List<Record> records) {
 		Optional<CollaborationContext> collaborationContext = CollaborationContextHelper.create(collaborationContextFactory, collaborationDirectives);
-		TransferInfo transfer = ingestionService.createUpdateRecords(skipdupes, records, headers.getUserEmail(), collaborationContext);
+		TransferInfo transfer = ingestionService.createUpdateRecords(Boolean.TRUE.equals(skipdupes), records, headers.getUserEmail(), collaborationContext);
 		return createUpdateRecordsResponseMapper.map(transfer, records);
 	}
 
