@@ -37,7 +37,6 @@ public class RecordBlocks {
         this.objectMapper = objectMapper;
     }
 
-    @Autowired
     private static final String HASH_KEY_DATA = "data";
     private static final String HASH_KEY_META = "meta";
 

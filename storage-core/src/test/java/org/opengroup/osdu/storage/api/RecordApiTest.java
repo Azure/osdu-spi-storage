@@ -57,6 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -152,6 +153,19 @@ public class RecordApiTest {
 
         CreateUpdateRecordsResponse response = this.sut.createOrUpdateRecords(COLLABORATION_DIRECTIVES, false, records);
         assertNotNull(response);
+    }
+
+    @Test
+    public void should_defaultSkipDuplicatesToFalse_whenOptionalParameterIsNull() {
+        TransferInfo transfer = new TransferInfo();
+        List<Record> records = new ArrayList<>();
+        records.add(new Record());
+        when(this.ingestionService.createUpdateRecords(false, records, this.USER, Optional.empty())).thenReturn(transfer);
+        when(this.createUpdateRecordsResponseMapper.map(transfer, records)).thenReturn(new CreateUpdateRecordsResponse());
+
+        this.sut.createOrUpdateRecords(COLLABORATION_DIRECTIVES, null, records);
+
+        verify(this.ingestionService).createUpdateRecords(false, records, this.USER, Optional.empty());
     }
 
     @Test
@@ -348,7 +362,7 @@ public class RecordApiTest {
     @Test
     public void should_allowAccessToCreateOrUpdateRecords_when_userBelongsToCreatorOrAdminGroups() throws Exception {
 
-        Method method = this.sut.getClass().getMethod("createOrUpdateRecords",  String.class ,boolean.class, List.class);
+        Method method = this.sut.getClass().getMethod("createOrUpdateRecords", String.class, Boolean.class, List.class);
         PreAuthorize annotation = method.getAnnotation(PreAuthorize.class);
 
         assertFalse(annotation.value().contains(StorageRole.VIEWER));
