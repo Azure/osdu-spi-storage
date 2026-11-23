@@ -49,7 +49,7 @@
       <!-- Project Versions-->
       <json-smart.version>2.6.0</json-smart.version>
       <openapi.version>3.0.3</openapi.version>
-      <swagger-core.version>2.2.47</swagger-core.version>
+      <swagger-core.version>2.2.56</swagger-core.version>
       <lombok.version>1.18.42</lombok.version>
       <mockito.version>5.23.0</mockito.version>
       <!-- Empty placeholder so Surefire can late-replace @{argLine} (e.g. Jacoco); without it the literal @{argLine} is passed to the JVM and tests fail to start. -->
