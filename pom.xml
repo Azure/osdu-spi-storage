@@ -57,7 +57,7 @@
       <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
       <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
       <guava.version>33.7.2-jre</guava.version>
-      <logback.version>1.6.5</logback.version>
+      <logback.version>1.6.8</logback.version>
       <!-- lettuce-core 7.x requires Netty 4.2+ -->
       <netty.version>4.2.19.Final</netty.version>
       <commons-codec.version>1.17.1</commons-codec.version>
