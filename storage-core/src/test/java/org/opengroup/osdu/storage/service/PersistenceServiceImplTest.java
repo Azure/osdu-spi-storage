@@ -419,6 +419,57 @@ public class PersistenceServiceImplTest {
     }
 
     @Test
+    public void should_publishSingleV1Update_after_metadataIsPersisted() {
+        RecordMetadata metadata = this.createListOfRecordMetadata().get(0);
+        ArgumentCaptor<PubSubInfo[]> events = ArgumentCaptor.forClass(PubSubInfo[].class);
+
+        this.sut.updateMetadataAndPublishRecordChangeEvent(metadata, Optional.empty());
+
+        var order = inOrder(this.recordRepository, this.pubSubClient);
+        order.verify(this.recordRepository).createOrUpdate(Collections.singletonList(metadata), Optional.empty());
+        order.verify(this.pubSubClient).publishMessage(eq(this.headers), events.capture());
+        assertEquals(1, events.getValue().length);
+        PubSubInfo event = events.getValue()[0];
+        assertEquals(metadata.getId(), event.getId());
+        assertEquals(metadata.getKind(), event.getKind());
+        assertEquals(OperationType.update, event.getOp());
+        verifyNoMoreInteractions(this.pubSubClient);
+    }
+
+    @Test
+    public void should_publishSingleV2Update_after_collaborationMetadataIsPersisted() {
+        RecordMetadata metadata = this.createListOfRecordMetadata().get(0);
+        ArgumentCaptor<RecordChangedV2[]> events = ArgumentCaptor.forClass(RecordChangedV2[].class);
+
+        this.sut.updateMetadataAndPublishRecordChangeEvent(metadata, COLLABORATION_CONTEXT);
+
+        var order = inOrder(this.recordRepository, this.pubSubClient);
+        order.verify(this.recordRepository).createOrUpdate(Collections.singletonList(metadata), COLLABORATION_CONTEXT);
+        order.verify(this.pubSubClient).publishMessage(eq(COLLABORATION_CONTEXT), eq(this.headers), events.capture());
+        assertEquals(1, events.getValue().length);
+        RecordChangedV2 event = events.getValue()[0];
+        assertEquals(metadata.getId(), event.getId());
+        assertEquals(metadata.getKind(), event.getKind());
+        assertEquals(metadata.getLatestVersion(), event.getVersion());
+        assertEquals(metadata.getModifyUser(), event.getModifiedBy());
+        assertEquals(OperationType.update, event.getOp());
+        verifyNoMoreInteractions(this.pubSubClient);
+    }
+
+    @Test
+    public void should_notPublishUpdate_when_metadataPersistenceFails() {
+        RecordMetadata metadata = this.createListOfRecordMetadata().get(0);
+        AppException failure = new AppException(500, "Persistence failed", "Cannot write metadata");
+        when(this.recordRepository.createOrUpdate(anyList(), eq(Optional.empty()))).thenThrow(failure);
+
+        AppException actual = assertThrows(AppException.class,
+                () -> this.sut.updateMetadataAndPublishRecordChangeEvent(metadata, Optional.empty()));
+
+        assertSame(failure, actual);
+        verifyNoInteractions(this.pubSubClient);
+    }
+
+    @Test
     public void should_rejectMissingMetadata_when_publishingRecordChangeEvent() {
         assertThrows(IllegalArgumentException.class,
                 () -> this.sut.updateMetadataAndPublishRecordChangeEvent(null, Optional.empty()));
