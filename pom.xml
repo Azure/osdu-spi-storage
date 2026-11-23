@@ -64,7 +64,7 @@
       <!-- os-core-common declares lettuce-core as provided; CVE-2025-58057 requires >= 7.5.2.RELEASE -->
       <lettuce.version>7.5.2.RELEASE</lettuce.version>
       <!-- Patched Tomcat 11 line -->
-      <tomcat.version>11.0.27</tomcat.version>
+      <tomcat.version>11.0.29</tomcat.version>
 
       <!-- Plugin Versions -->
       <spring-boot-maven-plugin.version>${spring-boot.version}</spring-boot-maven-plugin.version>
