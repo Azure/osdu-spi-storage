@@ -231,21 +231,14 @@ public class PersistenceServiceImpl implements PersistenceService {
             throw new IllegalArgumentException("Record metadata is required.");
         }
 
-        List<RecordMetadata> recordMetadataList = Collections.singletonList(recordMetadata);
-        commitDatastoreTransaction(recordMetadataList, collaborationContext);
+        commitDatastoreTransaction(Collections.singletonList(recordMetadata), collaborationContext);
 
-        // publish event
-        PubSubInfo[] pubsubInfo = new PubSubInfo[recordMetadataList.size()];
-        RecordChangedV2[] recordChangedV2 = new RecordChangedV2[recordMetadataList.size()];
-        for (int i = 0; i < recordMetadataList.size(); i++) {
-            RecordMetadata metadata = recordMetadataList.get(i);
-            pubsubInfo[i] = getPubSubInfo(metadata, OperationType.update);
-            recordChangedV2[i] = getRecordChangedV2(metadata, OperationType.update);
-        }
         if (collaborationContext.isPresent()) {
-            this.pubSubClient.publishMessage(collaborationContext, this.headers, recordChangedV2);
+            this.pubSubClient.publishMessage(collaborationContext, this.headers,
+                    getRecordChangedV2(recordMetadata, OperationType.update));
         } else {
-            this.pubSubClient.publishMessage(this.headers, pubsubInfo);
+            this.pubSubClient.publishMessage(this.headers,
+                    getPubSubInfo(recordMetadata, OperationType.update));
         }
 
     }
