@@ -59,7 +59,7 @@
       <guava.version>33.7.2-jre</guava.version>
       <logback.version>1.6.5</logback.version>
       <!-- lettuce-core 7.x requires Netty 4.2+ -->
-      <netty.version>4.2.19.Final</netty.version>
+      <netty.version>4.2.21.Final</netty.version>
       <commons-codec.version>1.17.1</commons-codec.version>
       <!-- os-core-common declares lettuce-core as provided; CVE-2025-58057 requires >= 7.5.2.RELEASE -->
       <lettuce.version>7.5.2.RELEASE</lettuce.version>
